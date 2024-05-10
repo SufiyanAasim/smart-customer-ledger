@@ -1,0 +1,46 @@
+@model PaymentCreateViewModel
+@{
+    ViewData["Title"] = "Record Payment";
+}
+
+<h1>Record Payment</h1>
+<p class="text-muted">
+    Invoice <strong>@Model.Invoice?.InvoiceNumber</strong> — Outstanding: <strong>@Model.Invoice?.OutstandingAmount.ToString("N2")</strong>
+</p>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <input type="hidden" asp-for="InvoiceId" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="PaymentNumber" class="form-label"></label>
+        <input asp-for="PaymentNumber" class="form-control" />
+        <span asp-validation-for="PaymentNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PaymentDate" class="form-label"></label>
+        <input asp-for="PaymentDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PaymentMethod" class="form-label"></label>
+        <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<PaymentMethod>()"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="TransactionReference" class="form-label"></label>
+        <input asp-for="TransactionReference" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Record Payment</button>
+    <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

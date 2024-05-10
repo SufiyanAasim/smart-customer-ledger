@@ -1,0 +1,45 @@
+@model PagedResult<CustomerInteraction>
+@{
+    ViewData["Title"] = "Customer Interactions";
+}
+
+<h1>Customer Interactions</h1>
+
+@if (!Model.Items.Any())
+{
+    <p class="text-muted">No interactions recorded yet.</p>
+}
+else
+{
+    <table class="table table-striped cl-table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Follow-Up</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var interaction in Model.Items)
+        {
+            <tr>
+                <td><a asp-controller="Customers" asp-action="Details" asp-route-id="@interaction.CustomerId">@interaction.Customer?.FullName</a></td>
+                <td>@interaction.InteractionType</td>
+                <td>@interaction.Subject</td>
+                <td>@interaction.InteractionDate.ToString("g")</td>
+                <td>@(interaction.FollowUpDate?.ToString("d") ?? "-")</td>
+                <td><span class="badge cl-status-@interaction.Status.ToString().ToLowerInvariant()">@interaction.Status</span></td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@interaction.CustomerInteractionId">View</a>
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@interaction.CustomerInteractionId">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @await Html.PartialAsync("_Pagination", Model, ViewData)
+}
