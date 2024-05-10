@@ -1,0 +1,44 @@
+@using CustomerLedger.Application.DTOs
+@model IReadOnlyList<ReconciliationReport>
+@{
+    ViewData["Title"] = "Reconciliation Results";
+    var mismatchCount = Model.Count(r => r.HadMismatch);
+}
+
+<h1>Reconciliation Results</h1>
+<p class="text-muted">@Model.Count account(s) checked — @mismatchCount corrected.</p>
+
+<table class="table table-striped cl-table">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Total Billed (before → after)</th>
+            <th>Total Paid (before → after)</th>
+            <th>Current Balance (before → after)</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var report in Model)
+    {
+        <tr class="@(report.HadMismatch ? "table-warning" : "")">
+            <td>@report.CustomerName</td>
+            <td>@report.PreviousTotalBilled.ToString("N2") &rarr; @report.RecalculatedTotalBilled.ToString("N2")</td>
+            <td>@report.PreviousTotalPaid.ToString("N2") &rarr; @report.RecalculatedTotalPaid.ToString("N2")</td>
+            <td>@report.PreviousCurrentBalance.ToString("N2") &rarr; @report.RecalculatedCurrentBalance.ToString("N2")</td>
+            <td>
+                @if (report.HadMismatch)
+                {
+                    <span class="badge cl-status-overdue">Corrected</span>
+                }
+                else
+                {
+                    <span class="badge cl-status-active">OK</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-outline-secondary">Run again</a>

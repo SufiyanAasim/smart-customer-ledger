@@ -1,0 +1,145 @@
+@model Invoice
+@{
+    ViewData["Title"] = "Invoice " + Model.InvoiceNumber;
+    var isDraft = Model.InvoiceStatus == InvoiceStatus.Draft;
+    var isActive = Model.InvoiceStatus == InvoiceStatus.Active;
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Invoice @Model.InvoiceNumber</h1>
+    <span class="badge fs-6 cl-status-@Model.InvoiceStatus.ToString().ToLowerInvariant()">@Model.InvoiceStatus</span>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-2">Customer</dt>
+    <dd class="col-sm-4">
+        <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId">@Model.Customer?.FullName</a>
+    </dd>
+    <dt class="col-sm-2">Branch</dt>
+    <dd class="col-sm-4">@Model.Branch?.Name</dd>
+    <dt class="col-sm-2">Invoice Date</dt>
+    <dd class="col-sm-4">@Model.InvoiceDate.ToString("d")</dd>
+    <dt class="col-sm-2">Due Date</dt>
+    <dd class="col-sm-4">@(Model.DueDate?.ToString("d") ?? "-")</dd>
+    <dt class="col-sm-2">Payment Status</dt>
+    <dd class="col-sm-4"><span class="badge cl-status-@Model.PaymentStatus.ToString().ToLowerInvariant()">@Model.PaymentStatus</span></dd>
+</dl>
+
+<h4>Items</h4>
+<table class="table cl-table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Discount</th>
+            <th>Tax</th>
+            <th>Line Total</th>
+            @if (isDraft)
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.InvoiceItems)
+    {
+        <tr>
+            <td>@item.Description</td>
+            <td>@item.Quantity</td>
+            <td>@item.UnitPrice.ToString("N2")</td>
+            <td>@item.DiscountAmount.ToString("N2")</td>
+            <td>@item.TaxAmount.ToString("N2")</td>
+            <td>@item.LineTotal.ToString("N2")</td>
+            @if (isDraft)
+            {
+                <td>
+                    <form asp-action="RemoveItem" method="post" class="d-inline">
+                        <input type="hidden" name="invoiceId" value="@Model.InvoiceId" />
+                        <input type="hidden" name="invoiceItemId" value="@item.InvoiceItemId" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove this item?');">Remove</button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="5" class="text-end">Subtotal</th>
+            <th>@Model.Subtotal.ToString("N2")</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-end">Discount</th>
+            <th>@Model.DiscountAmount.ToString("N2")</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-end">Tax</th>
+            <th>@Model.TaxAmount.ToString("N2")</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-end">Total</th>
+            <th>@Model.TotalAmount.ToString("N2")</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-end">Paid</th>
+            <th>@Model.PaidAmount.ToString("N2")</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-end">Outstanding</th>
+            <th>@Model.OutstandingAmount.ToString("N2")</th>
+        </tr>
+    </tfoot>
+</table>
+
+@if (isDraft)
+{
+    <h5>Add Item</h5>
+    <form asp-action="AddItem" method="post" class="row g-2 col-md-10">
+        <input type="hidden" name="invoiceId" value="@Model.InvoiceId" />
+        <div class="col-md-4"><input name="Description" class="form-control" placeholder="Description" required /></div>
+        <div class="col-md-1"><input name="Quantity" type="number" step="0.01" min="0.01" class="form-control" value="1" required /></div>
+        <div class="col-md-2"><input name="UnitPrice" type="number" step="0.01" min="0" class="form-control" placeholder="Unit price" required /></div>
+        <div class="col-md-2"><input name="DiscountAmount" type="number" step="0.01" min="0" class="form-control" placeholder="Discount" value="0" /></div>
+        <div class="col-md-2"><input name="TaxAmount" type="number" step="0.01" min="0" class="form-control" placeholder="Tax" value="0" /></div>
+        <div class="col-md-1"><button type="submit" class="btn btn-outline-primary w-100">Add</button></div>
+    </form>
+
+    <form asp-action="Activate" asp-route-id="@Model.InvoiceId" method="post" class="mt-3 d-inline">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Activate this invoice? It will become billable and items can no longer be changed.');">Activate Invoice</button>
+    </form>
+}
+
+@if (isActive)
+{
+    <a asp-controller="Payments" asp-action="Create" asp-route-invoiceId="@Model.InvoiceId" class="btn btn-primary mt-3">Record Payment</a>
+    <a asp-controller="InstallmentPlans" asp-action="Create" asp-route-invoiceId="@Model.InvoiceId" class="btn btn-outline-primary mt-3">Create Installment Plan</a>
+    @if (!Model.Payments.Any())
+    {
+        <form asp-action="Cancel" asp-route-id="@Model.InvoiceId" method="post" class="mt-3 d-inline">
+            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Cancel this invoice?');">Cancel Invoice</button>
+        </form>
+    }
+}
+
+@if (Model.Payments.Any())
+{
+    <h4 class="mt-4">Payments</h4>
+    <table class="table table-sm cl-table">
+        <thead><tr><th>Payment #</th><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+        <tbody>
+        @foreach (var payment in Model.Payments)
+        {
+            <tr>
+                <td>@payment.PaymentNumber</td>
+                <td>@payment.PaymentDate.ToString("d")</td>
+                <td>@payment.Amount.ToString("N2")</td>
+                <td>@payment.PaymentMethod</td>
+                <td>@payment.PaymentStatus</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-2">Back to list</a>

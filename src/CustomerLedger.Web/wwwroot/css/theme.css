@@ -1,0 +1,131 @@
+/*
+  CustomerLedger — Charcoal + Emerald theme.
+  Overrides Bootstrap defaults rather than replacing the framework, so component
+  behavior (dropdowns, modals, form validation styling) keeps working unmodified.
+*/
+
+:root {
+  --cl-charcoal-950: #0b1220;
+  --cl-charcoal-900: #111827;
+  --cl-charcoal-800: #1e293b;
+  --cl-charcoal-700: #334155;
+  --cl-charcoal-200: #e2e8f0;
+  --cl-emerald-500: #10b981;
+  --cl-emerald-600: #059669;
+  --cl-emerald-700: #047857;
+  --cl-amber-500: #f59e0b;
+  --cl-red-500: #ef4444;
+
+  --bs-primary: var(--cl-emerald-600);
+  --bs-primary-rgb: 5, 150, 105;
+  --bs-body-bg: #f8fafc;
+  --bs-body-color: var(--cl-charcoal-900);
+}
+
+body {
+  background-color: var(--bs-body-bg);
+}
+
+.navbar-brand img {
+  height: 32px;
+  margin-right: 0.5rem;
+}
+
+.cl-navbar {
+  background-color: var(--cl-charcoal-950) !important;
+}
+
+.cl-navbar .navbar-brand,
+.cl-navbar .nav-link {
+  color: var(--cl-charcoal-200) !important;
+}
+
+.cl-navbar .nav-link:hover,
+.cl-navbar .nav-link.active {
+  color: #ffffff !important;
+}
+
+.cl-navbar .nav-link.active {
+  border-bottom: 2px solid var(--cl-emerald-500);
+}
+
+.btn-primary {
+  background-color: var(--cl-emerald-600);
+  border-color: var(--cl-emerald-600);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--cl-emerald-700);
+  border-color: var(--cl-emerald-700);
+}
+
+.cl-sidebar {
+  background-color: var(--cl-charcoal-900);
+  min-height: calc(100vh - 56px);
+}
+
+.cl-sidebar .nav-link {
+  color: var(--cl-charcoal-200);
+  border-radius: 0.375rem;
+}
+
+.cl-sidebar .nav-link:hover,
+.cl-sidebar .nav-link.active {
+  background-color: var(--cl-charcoal-800);
+  color: #ffffff;
+}
+
+.cl-branch-badge {
+  background-color: var(--cl-charcoal-800);
+  color: var(--cl-emerald-500);
+  font-weight: 600;
+}
+
+.cl-card-stat {
+  border-left: 4px solid var(--cl-emerald-500);
+}
+
+.cl-status-active,
+.cl-status-paid,
+.cl-status-completed {
+  color: #fff;
+  background-color: var(--cl-emerald-600);
+}
+
+.cl-status-overdue,
+.cl-status-cancelled,
+.cl-status-reversed {
+  color: #fff;
+  background-color: var(--cl-red-500);
+}
+
+.cl-status-partiallypaid,
+.cl-status-pendingapproval,
+.cl-status-pending {
+  color: #1f2937;
+  background-color: var(--cl-amber-500);
+}
+
+table.cl-table thead {
+  background-color: var(--cl-charcoal-900);
+  color: #fff;
+}
+
+.cl-footer {
+  background-color: var(--cl-charcoal-950);
+  color: var(--cl-charcoal-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--cl-charcoal-950);
+    color: var(--cl-charcoal-200);
+  }
+
+  .card,
+  .table {
+    background-color: var(--cl-charcoal-900);
+    color: var(--cl-charcoal-200);
+  }
+}

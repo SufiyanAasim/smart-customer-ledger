@@ -1,0 +1,25 @@
+@using CustomerLedger.Domain.Entities
+@{
+    ViewData["Title"] = "Account Reconciliation";
+    var branches = (IEnumerable<Branch>)ViewBag.Branches;
+}
+
+<h1>Account Reconciliation</h1>
+<p class="text-muted">
+    Recalculates every customer account in the selected branch from source invoices and
+    payments, corrects any drift, and reports what changed.
+</p>
+
+<form asp-action="Run" method="post" class="row g-2">
+    <div class="col-auto">
+        <select name="branchId" class="form-select">
+            @foreach (var branch in branches)
+            {
+                <option value="@branch.BranchId">@branch.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Run Reconciliation</button>
+    </div>
+</form>

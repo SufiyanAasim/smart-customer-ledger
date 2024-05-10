@@ -1,0 +1,90 @@
+@model PagedResult<BackupHistory>
+@{
+    ViewData["Title"] = "Backup History";
+}
+
+<h1>Backup History</h1>
+<p class="text-muted">
+    Requires the <code>mysqldump</code>/<code>mysql</code> client tools to be on the
+    server's PATH (or configured via <code>BackupSettings:MysqldumpPath</code> /
+    <code>BackupSettings:MysqlClientPath</code>). A run is only ever marked Completed if the
+    process actually exited successfully and produced a non-empty file.
+</p>
+
+<form asp-action="Create" method="post" class="row g-2 mb-4">
+    <div class="col-auto">
+        <select name="backupType" class="form-select">
+            @foreach (var type in Enum.GetNames(typeof(BackupType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Run Backup Now</button>
+    </div>
+</form>
+
+@if (!Model.Items.Any())
+{
+    <p class="text-muted">No backup runs recorded yet.</p>
+}
+else
+{
+    <table class="table table-striped cl-table">
+        <thead>
+            <tr>
+                <th>Started (UTC)</th>
+                <th>Completed (UTC)</th>
+                <th>Type</th>
+                <th>File</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var backup in Model.Items)
+        {
+            <tr>
+                <td>@backup.StartedAtUtc.ToString("u")</td>
+                <td>@(backup.CompletedAtUtc?.ToString("u") ?? "-")</td>
+                <td>@backup.BackupType</td>
+                <td>@backup.FileName</td>
+                <td>@(backup.FileSize.HasValue ? $"{backup.FileSize:N0} bytes" : "-")</td>
+                <td>
+                    <span class="badge @(backup.Status == BackupStatus.Completed ? "cl-status-active" : backup.Status == BackupStatus.Failed ? "cl-status-cancelled" : "cl-status-pending")">
+                        @backup.Status
+                    </span>
+                </td>
+                <td>
+                    @if (backup.Status == BackupStatus.Completed)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#restore-@backup.BackupHistoryId">
+                            Restore
+                        </button>
+                    }
+                </td>
+            </tr>
+            @if (backup.Status == BackupStatus.Completed)
+            {
+                <tr class="collapse" id="restore-@backup.BackupHistoryId">
+                    <td colspan="7">
+                        <form asp-action="Restore" method="post" class="row g-2 align-items-end">
+                            <input type="hidden" name="id" value="@backup.BackupHistoryId" />
+                            <div class="col-auto">
+                                <label class="form-label text-danger">Type RESTORE to confirm (this overwrites the current database)</label>
+                                <input type="text" name="confirmationText" class="form-control" required />
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-danger">Restore This Backup</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    @await Html.PartialAsync("_Pagination", Model, ViewData)
+}
