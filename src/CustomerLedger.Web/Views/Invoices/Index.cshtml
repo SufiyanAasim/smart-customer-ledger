@@ -1,0 +1,62 @@
+@model PagedResult<Invoice>
+@{
+    ViewData["Title"] = "Invoices";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Invoices</h1>
+    <a class="btn btn-outline-secondary" asp-controller="Exports" asp-action="InvoicesCsv">Export CSV</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="status" class="form-select">
+            <option value="">All statuses</option>
+            @foreach (var s in Enum.GetNames(typeof(InvoiceStatus)))
+            {
+                <option value="@s" selected="@(s == (string?)ViewData["status"])">@s</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+@if (!Model.Items.Any())
+{
+    <p class="text-muted">No invoices found.</p>
+}
+else
+{
+    <table class="table table-striped cl-table">
+        <thead>
+            <tr>
+                <th>Invoice #</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Outstanding</th>
+                <th>Payment Status</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var invoice in Model.Items)
+        {
+            <tr>
+                <td>@invoice.InvoiceNumber</td>
+                <td>@invoice.Customer?.FullName</td>
+                <td>@invoice.InvoiceDate.ToString("d")</td>
+                <td>@invoice.TotalAmount.ToString("N2")</td>
+                <td>@invoice.OutstandingAmount.ToString("N2")</td>
+                <td><span class="badge cl-status-@invoice.PaymentStatus.ToString().ToLowerInvariant()">@invoice.PaymentStatus</span></td>
+                <td><span class="badge cl-status-@invoice.InvoiceStatus.ToString().ToLowerInvariant()">@invoice.InvoiceStatus</span></td>
+                <td><a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@invoice.InvoiceId">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @await Html.PartialAsync("_Pagination", Model, ViewData)
+}

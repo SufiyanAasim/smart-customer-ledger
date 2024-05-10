@@ -1,0 +1,32 @@
+# .NET build output
+bin/
+obj/
+*.user
+*.suo
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+*.swp
+
+# User secrets / local overrides (never commit real connection strings or credentials)
+appsettings.Development.local.json
+**/appsettings.Local.json
+secrets.json
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+coverage/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Local SQLite / backup artifacts that must never be committed
+*.db
+*.bak
+database/backup/*.sql.gz
+
+# Generated MySQL backup dumps (real customer data — never commit these)
+**/App_Data/Backups/

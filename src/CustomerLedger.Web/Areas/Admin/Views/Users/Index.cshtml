@@ -1,0 +1,67 @@
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Users</h1>
+    <a class="btn btn-primary" asp-action="Create">+ New User</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="search" value="@ViewData["search"]" class="form-control" placeholder="Search name, email, employee code" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </div>
+</form>
+
+<table class="table table-striped cl-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Employee Code</th>
+            <th>Branch</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.FullName</td>
+            <td>@user.Email</td>
+            <td>@user.EmployeeCode</td>
+            <td>@(user.BranchId?.ToString() ?? "All (Admin)")</td>
+            <td>
+                @if (user.IsActive)
+                {
+                    <span class="badge cl-status-active">Active</span>
+                }
+                else
+                {
+                    <span class="badge cl-status-cancelled">Inactive</span>
+                }
+            </td>
+            <td>
+                <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                @if (user.IsActive)
+                {
+                    <form asp-action="Deactivate" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Deactivate this user?');">Deactivate</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Reactivate" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-success">Reactivate</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

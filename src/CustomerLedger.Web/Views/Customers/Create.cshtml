@@ -1,0 +1,61 @@
+@model CustomerFormViewModel
+@{
+    ViewData["Title"] = "New Customer";
+}
+
+<h1>New Customer</h1>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="BranchId" class="form-label"></label>
+        <select asp-for="BranchId" class="form-select" asp-items="@(new SelectList(Model.AvailableBranches, "BranchId", "Name"))"></select>
+        <span asp-validation-for="BranchId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerCode" class="form-label"></label>
+        <input asp-for="CustomerCode" class="form-control" />
+        <span asp-validation-for="CustomerCode" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CNIC" class="form-label"></label>
+        <input asp-for="CNIC" class="form-control" />
+        <span asp-validation-for="CNIC" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Address" class="form-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="City" class="form-label"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="InitialCreditLimit" class="form-label"></label>
+        <input asp-for="InitialCreditLimit" class="form-control" />
+        <span asp-validation-for="InitialCreditLimit" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Register Customer</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
