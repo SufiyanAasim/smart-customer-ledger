@@ -1,0 +1,45 @@
+@model CustomerInteractionFormViewModel
+@{
+    ViewData["Title"] = "Log Interaction";
+}
+
+<h1>Log Interaction</h1>
+<p class="text-muted">Customer: <strong>@Model.Customer?.FullName</strong></p>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <input type="hidden" asp-for="CustomerId" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="InteractionType" class="form-label"></label>
+        <select asp-for="InteractionType" class="form-select" asp-items="Html.GetEnumSelectList<InteractionType>()"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Subject" class="form-label"></label>
+        <input asp-for="Subject" class="form-control" />
+        <span asp-validation-for="Subject" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="InteractionDate" class="form-label"></label>
+        <input asp-for="InteractionDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="FollowUpDate" class="form-label"></label>
+        <input asp-for="FollowUpDate" class="form-control" />
+        <span asp-validation-for="FollowUpDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<InteractionStatus>()"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

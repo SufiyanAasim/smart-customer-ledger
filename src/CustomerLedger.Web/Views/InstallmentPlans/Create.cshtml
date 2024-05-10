@@ -1,0 +1,43 @@
+@model InstallmentPlanCreateViewModel
+@{
+    ViewData["Title"] = "New Installment Plan";
+}
+
+<h1>New Installment Plan</h1>
+<p class="text-muted">
+    Invoice <strong>@Model.Invoice?.InvoiceNumber</strong> — Outstanding: <strong>@Model.Invoice?.OutstandingAmount.ToString("N2")</strong>
+</p>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <input type="hidden" asp-for="InvoiceId" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="DownPayment" class="form-label"></label>
+        <input asp-for="DownPayment" class="form-control" />
+        <span asp-validation-for="DownPayment" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NumberOfInstallments" class="form-label"></label>
+        <input asp-for="NumberOfInstallments" class="form-control" />
+        <span asp-validation-for="NumberOfInstallments" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Frequency" class="form-label"></label>
+        <select asp-for="Frequency" class="form-select" asp-items="Html.GetEnumSelectList<InstallmentFrequency>()"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Plan</button>
+    <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

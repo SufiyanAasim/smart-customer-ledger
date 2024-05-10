@@ -1,0 +1,54 @@
+@using CustomerLedger.Application.DTOs
+@model CustomerImportResult
+@{
+    ViewData["Title"] = Model.WasCommitted ? "Import Complete" : "Import Preview";
+    var branchId = (int)ViewBag.BranchId;
+}
+
+<h1>@(Model.WasCommitted ? "Import Complete" : "Import Preview")</h1>
+
+<p>
+    <strong>@Model.AcceptedCount</strong> row(s) @(Model.WasCommitted ? "imported" : "will be imported"),
+    <strong>@Model.RejectedCount</strong> rejected.
+</p>
+
+<table class="table table-sm cl-table">
+    <thead><tr><th>Row</th><th>Customer Code</th><th>Name</th><th>Result</th></tr></thead>
+    <tbody>
+    @foreach (var row in Model.Rows)
+    {
+        <tr class="@(row.Accepted ? "" : "table-danger")">
+            <td>@row.RowNumber</td>
+            <td>@row.CustomerCode</td>
+            <td>@row.FullName</td>
+            <td>
+                @if (row.Accepted)
+                {
+                    <span class="badge cl-status-active">Accepted</span>
+                }
+                else
+                {
+                    <span class="badge cl-status-cancelled">Rejected</span> @row.RejectionReason
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@if (!Model.WasCommitted && Model.AcceptedCount > 0)
+{
+    <form asp-action="ConfirmImport" method="post" enctype="multipart/form-data" class="row g-2 col-md-8">
+        <input type="hidden" name="branchId" value="@branchId" />
+        <div class="col-md-8">
+            <label class="form-label">Re-select the same CSV file to confirm</label>
+            <input type="file" name="file" class="form-control" accept=".csv" required />
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Confirm Import</button>
+        </div>
+    </form>
+}
+
+<a asp-action="Import" class="btn btn-outline-secondary mt-3">Back to import</a>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Back to customer list</a>

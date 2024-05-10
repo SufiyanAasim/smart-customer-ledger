@@ -1,0 +1,50 @@
+@using CustomerLedger.Domain.Constants
+@model Payment
+@{
+    ViewData["Title"] = "Payment " + Model.PaymentNumber;
+}
+
+<h1>Payment @Model.PaymentNumber</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Invoice</dt>
+    <dd class="col-sm-9"><a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId">@Model.Invoice?.InvoiceNumber</a></dd>
+    <dt class="col-sm-3">Customer</dt>
+    <dd class="col-sm-9">@Model.Customer?.FullName</dd>
+    <dt class="col-sm-3">Date</dt>
+    <dd class="col-sm-9">@Model.PaymentDate.ToString("d")</dd>
+    <dt class="col-sm-3">Amount</dt>
+    <dd class="col-sm-9">@Model.Amount.ToString("N2")</dd>
+    <dt class="col-sm-3">Method</dt>
+    <dd class="col-sm-9">@Model.PaymentMethod</dd>
+    <dt class="col-sm-3">Reference</dt>
+    <dd class="col-sm-9">@(Model.TransactionReference ?? "-")</dd>
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9"><span class="badge cl-status-@Model.PaymentStatus.ToString().ToLowerInvariant()">@Model.PaymentStatus</span></dd>
+    <dt class="col-sm-3">Notes</dt>
+    <dd class="col-sm-9">@(Model.Notes ?? "-")</dd>
+    @if (Model.ReversedPaymentId.HasValue)
+    {
+        <dt class="col-sm-3">Reverses Payment</dt>
+        <dd class="col-sm-9"><a asp-action="Details" asp-route-id="@Model.ReversedPaymentId">#@Model.ReversedPaymentId</a></dd>
+    }
+    @if (!string.IsNullOrEmpty(Model.ReversalReason))
+    {
+        <dt class="col-sm-3">Reversal Reason</dt>
+        <dd class="col-sm-9">@Model.ReversalReason</dd>
+    }
+</dl>
+
+@if (Model.PaymentStatus == PaymentStatus.Completed && (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.BranchManager)))
+{
+    <form asp-action="Reverse" asp-route-id="@Model.PaymentId" method="post" class="col-md-6 border-top pt-3">
+        <h5>Reverse This Payment</h5>
+        <div class="mb-3">
+            <label class="form-label">Reversal Reason</label>
+            <textarea name="reversalReason" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Reverse this payment? This cannot be undone.');">Reverse Payment</button>
+    </form>
+}
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Back to list</a>

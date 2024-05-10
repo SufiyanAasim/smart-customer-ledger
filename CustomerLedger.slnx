@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CustomerLedger.Application/CustomerLedger.Application.csproj" />
+    <Project Path="src/CustomerLedger.Domain/CustomerLedger.Domain.csproj" />
+    <Project Path="src/CustomerLedger.Infrastructure/CustomerLedger.Infrastructure.csproj" />
+    <Project Path="src/CustomerLedger.Web/CustomerLedger.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CustomerLedger.DatabaseTests/CustomerLedger.DatabaseTests.csproj" />
+    <Project Path="tests/CustomerLedger.IntegrationTests/CustomerLedger.IntegrationTests.csproj" />
+    <Project Path="tests/CustomerLedger.UnitTests/CustomerLedger.UnitTests.csproj" />
+  </Folder>
+</Solution>

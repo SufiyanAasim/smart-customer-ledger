@@ -1,0 +1,102 @@
+@model InvoiceCreateViewModel
+@{
+    ViewData["Title"] = "New Invoice";
+}
+
+<h1>New Invoice</h1>
+<p class="text-muted">Customer: <strong>@Model.Customer?.FullName</strong> (@Model.Customer?.CustomerCode)</p>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="CustomerId" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row col-md-8">
+        <div class="col-md-6 mb-3">
+            <label asp-for="InvoiceNumber" class="form-label"></label>
+            <input asp-for="InvoiceNumber" class="form-control" />
+            <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="InvoiceDate" class="form-label"></label>
+            <input asp-for="InvoiceDate" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="DueDate" class="form-label"></label>
+            <input asp-for="DueDate" class="form-control" />
+        </div>
+    </div>
+
+    <h4>Items</h4>
+    <table class="table" id="items-table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Discount</th>
+                <th>Tax</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < Model.Items.Count; i++)
+        {
+            <tr>
+                <td><input name="Items[@i].Description" class="form-control" value="@Model.Items[i].Description" required /></td>
+                <td><input name="Items[@i].Quantity" type="number" step="0.01" min="0.01" class="form-control" value="@Model.Items[i].Quantity" required /></td>
+                <td><input name="Items[@i].UnitPrice" type="number" step="0.01" min="0" class="form-control" value="@Model.Items[i].UnitPrice" required /></td>
+                <td><input name="Items[@i].DiscountAmount" type="number" step="0.01" min="0" class="form-control" value="@Model.Items[i].DiscountAmount" /></td>
+                <td><input name="Items[@i].TaxAmount" type="number" step="0.01" min="0" class="form-control" value="@Model.Items[i].TaxAmount" /></td>
+                <td><button type="button" class="btn btn-sm btn-outline-danger remove-row">&times;</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="button" id="add-row" class="btn btn-outline-secondary btn-sm mb-3">+ Add Item Row</button>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Create Draft Invoice</button>
+        <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var tbody = document.querySelector('#items-table tbody');
+            var rowIndex = @Model.Items.Count;
+
+            document.getElementById('add-row').addEventListener('click', function () {
+                var row = document.createElement('tr');
+                row.innerHTML =
+                    '<td><input name="Items[' + rowIndex + '].Description" class="form-control" required /></td>' +
+                    '<td><input name="Items[' + rowIndex + '].Quantity" type="number" step="0.01" min="0.01" class="form-control" value="1" required /></td>' +
+                    '<td><input name="Items[' + rowIndex + '].UnitPrice" type="number" step="0.01" min="0" class="form-control" value="0" required /></td>' +
+                    '<td><input name="Items[' + rowIndex + '].DiscountAmount" type="number" step="0.01" min="0" class="form-control" value="0" /></td>' +
+                    '<td><input name="Items[' + rowIndex + '].TaxAmount" type="number" step="0.01" min="0" class="form-control" value="0" /></td>' +
+                    '<td><button type="button" class="btn btn-sm btn-outline-danger remove-row">&times;</button></td>';
+                tbody.appendChild(row);
+                rowIndex++;
+            });
+
+            function reindexRows() {
+                // ASP.NET Core's default list binder needs contiguous 0-based indices —
+                // removing a middle row would otherwise silently drop everything after it.
+                Array.from(tbody.querySelectorAll('tr')).forEach(function (row, idx) {
+                    row.querySelectorAll('input').forEach(function (input) {
+                        input.name = input.name.replace(/Items\[\d+\]/, 'Items[' + idx + ']');
+                    });
+                });
+                rowIndex = tbody.querySelectorAll('tr').length;
+            }
+
+            tbody.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-row')) {
+                    e.target.closest('tr').remove();
+                    reindexRows();
+                }
+            });
+        })();
+    </script>
+}

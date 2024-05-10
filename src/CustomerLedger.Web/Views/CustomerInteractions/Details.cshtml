@@ -1,0 +1,26 @@
+@model CustomerInteraction
+@{
+    ViewData["Title"] = "Interaction Details";
+}
+
+<h1>@Model.Subject</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Customer</dt>
+    <dd class="col-sm-9"><a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId">@Model.Customer?.FullName</a></dd>
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">@Model.InteractionType</dd>
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+    <dt class="col-sm-3">Interaction Date</dt>
+    <dd class="col-sm-9">@Model.InteractionDate.ToString("g")</dd>
+    <dt class="col-sm-3">Follow-Up Date</dt>
+    <dd class="col-sm-9">@(Model.FollowUpDate?.ToString("d") ?? "-")</dd>
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9"><span class="badge cl-status-@Model.Status.ToString().ToLowerInvariant()">@Model.Status</span></dd>
+    <dt class="col-sm-3">Recorded By</dt>
+    <dd class="col-sm-9">@Model.RecordedByUser?.FullName</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.CustomerInteractionId" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>

@@ -1,0 +1,47 @@
+@model PagedResult<Payment>
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Payments</h1>
+    <a class="btn btn-outline-secondary" asp-controller="Exports" asp-action="PaymentsCsv">Export CSV</a>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <p class="text-muted">No payments recorded yet.</p>
+}
+else
+{
+    <table class="table table-striped cl-table">
+        <thead>
+            <tr>
+                <th>Payment #</th>
+                <th>Invoice</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var payment in Model.Items)
+        {
+            <tr>
+                <td>@payment.PaymentNumber</td>
+                <td><a asp-controller="Invoices" asp-action="Details" asp-route-id="@payment.InvoiceId">@payment.Invoice?.InvoiceNumber</a></td>
+                <td>@payment.Customer?.FullName</td>
+                <td>@payment.PaymentDate.ToString("d")</td>
+                <td>@payment.Amount.ToString("N2")</td>
+                <td>@payment.PaymentMethod</td>
+                <td><span class="badge cl-status-@payment.PaymentStatus.ToString().ToLowerInvariant()">@payment.PaymentStatus</span></td>
+                <td><a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@payment.PaymentId">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @await Html.PartialAsync("_Pagination", Model, ViewData)
+}
