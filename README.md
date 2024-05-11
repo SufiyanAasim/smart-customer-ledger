@@ -5,7 +5,7 @@
 **CustomerLedger: A Multi-Branch Customer Billing, Credit, Payment, Installment, and Customer Interaction Management System Using ASP.NET Core MVC and MySQL**
 
 [![.NET](https://img.shields.io/badge/.NET-8.0%20LTS-512BD4?style=flat&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-2.0.0%20Balance-10b981?style=flat)](docs/releases/v2.0.0-Balance.md)
+[![Version](https://img.shields.io/badge/version-3.0.0%20Snapshot-10b981?style=flat)](docs/releases/v3.0.0-Snapshot.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=flat)](LICENSE)
 [![Database](https://img.shields.io/badge/database-MySQL%208.0-1e293b?style=flat&logo=mysql&logoColor=white)]()
 
@@ -31,8 +31,11 @@ Electronics shops, furniture stores, repair workshops, and other small/medium re
 - Installment plan creation with automatic schedule generation (remainder-safe splitting)
   and per-installment payment processing
 - Account reconciliation: recalculates and corrects a customer's totals from source rows
+- Real backup/restore execution (`mysqldump`/`mysql`) with actual outcomes recorded
+- CSV/JSON export (customers, invoices, payments, account statements) and validated,
+  preview-before-write CSV customer import
 - Customer interaction / complaint / follow-up logging
-- Administrator audit-log review and backup-history viewing (foundations)
+- Administrator audit-log review
 - Six required SQL reporting views, safe initial triggers, ACID-transaction SQL
   demonstrations, and 12 explicit parameterized SQL CRUD scripts
 - Search, filtering, sorting, and pagination on every list screen
@@ -68,7 +71,7 @@ branch id. See [docs/database/Database-Dictionary.md](docs/database/Database-Dic
 
 ## Current Version
 
-**v2.0.0 — Balance** (this release)
+**v3.0.0 — Snapshot** (this release)
 
 ## Release Roadmap
 
@@ -177,7 +180,9 @@ database/
   crud/         explicit parameterized CRUD for all 12 core tables
   views/        CreateViews.sql (6 required views), DropViews.sql
   triggers/     CreateTriggers.sql, DropTriggers.sql
-  seed/         DevelopmentSeed.sql
+  transactions/ InvoiceTransaction, PaymentTransaction, PaymentRollbackDemo,
+                PaymentReversal, Reconciliation, ACID-Demonstrations.sql
+  seed/         DevelopmentSeed.sql, DemonstrationSeed.sql, LargeDatasetSeed.sql
   verification/ VerifySchema/Constraints/Views/Triggers/SeedData.sql
 ```
 
@@ -205,12 +210,12 @@ governs which object.
 - Secrets belong in user secrets or environment variables — `appsettings.json` ships with an
   empty connection string on purpose.
 
-## Known Limitations (v1.0.0 — Index)
+## Known Limitations (v3.0.0 — Snapshot)
 
-- No full ACID/transaction lab yet (payment posting is transactional, but the dedicated
-  rollback/concurrency demonstrations ship with v2.0.0 — Balance).
-- Backup/restore execution, data export/import, and demonstration/large-volume seeders ship
-  with v3.0.0 — Snapshot.
+- Backup/restore requires the `mysqldump`/`mysql` client binaries on the server's PATH.
+- Import supports Customers only, not Invoices/Payments (those originate from the app's own
+  transactional workflows, not bulk upload).
+- No scheduled/automatic backups — every run is Administrator-triggered.
 - Full academic documentation package (proposal, report, diagrams, labs, viva prep) ships
   with v4.0.0 — Chronicle.
 - No read replica or sharding — those ship with v5.0.0 — Replica and v6.0.0 — Shard.
