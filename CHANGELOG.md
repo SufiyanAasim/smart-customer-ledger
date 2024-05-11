@@ -5,6 +5,24 @@ All notable changes to CustomerLedger are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [3.0.0] - Snapshot
+
+### Added
+
+- `IBackupService`/`MySqlBackupService`: real `mysqldump` execution with actual outcome
+  recorded in `BackupHistory` (password via `MYSQL_PWD` env var, never a CLI argument).
+- `IRestoreService`/`MySqlRestoreService`: restores a completed backup via the `mysql` client.
+- `CsvUtilities`: shared CSV read/write with formula-injection neutralization.
+- `IExportService`: CSV export for Customers/Invoices/Payments, JSON for Customers, and a
+  combined CSV account statement per customer.
+- `IImportService`: preview-then-confirm validated CSV import for Customers, with
+  duplicate/required-field rejection reporting.
+- Web UI: backup/restore controls (Admin), export links on Customer/Invoice/Payment lists,
+  and a Customers import screen.
+- `database/seed/DemonstrationSeed.sql` and `LargeDatasetSeed.sql`.
+- New tests: `CsvUtilitiesTests` (10, no DB needed) and `BackupServiceTests` (MySQL-gated,
+  confirms a missing `mysqldump` binary is recorded as Failed, never Completed).
+
 ## [2.0.0] - Balance
 
 ### Added
