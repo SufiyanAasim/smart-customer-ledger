@@ -5,6 +5,23 @@ All notable changes to CustomerLedger are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [4.0.0] - Chronicle
+
+### Added
+
+- `docs/proposal/Project-Proposal.md` and `docs/report/Final-Project-Report.md`.
+- 10 Mermaid diagrams under `docs/diagrams/` (ER, relational schema, use-case, architecture,
+  auth flow, invoice/payment/reversal/installment/backup-restore flows).
+- 12-file database dictionary under `docs/database/`.
+- 9 hands-on labs under `docs/labs/`.
+- 9 testing documents under `docs/testing/`, including a requirements traceability matrix.
+- 6 manuals under `docs/manuals/` (installation, configuration, user, admin, DB setup,
+  troubleshooting).
+- Viva Q&A and demonstration script under `docs/viva/`.
+- Grading and submission checklists under `docs/grading/`.
+
+Documentation-only release — no application, database, or test code changed.
+
 ## [3.0.0] - Snapshot
 
 ### Added
