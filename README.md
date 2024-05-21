@@ -5,7 +5,7 @@
 **CustomerLedger: A Multi-Branch Customer Billing, Credit, Payment, Installment, and Customer Interaction Management System Using ASP.NET Core MVC and MySQL**
 
 [![.NET](https://img.shields.io/badge/.NET-8.0%20LTS-512BD4?style=flat&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-3.0.0%20Snapshot-10b981?style=flat)](docs/releases/v3.0.0-Snapshot.md)
+[![Version](https://img.shields.io/badge/version-4.0.0%20Chronicle-10b981?style=flat)](docs/releases/v4.0.0-Chronicle.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=flat)](LICENSE)
 [![Database](https://img.shields.io/badge/database-MySQL%208.0-1e293b?style=flat&logo=mysql&logoColor=white)]()
 
@@ -71,7 +71,7 @@ branch id. See [docs/database/Database-Dictionary.md](docs/database/Database-Dic
 
 ## Current Version
 
-**v3.0.0 — Snapshot** (this release)
+**v4.0.0 — Chronicle** (this release — documentation only, no code changes)
 
 ## Release Roadmap
 
@@ -193,9 +193,20 @@ governs which object.
 
 ## Documentation
 
-- [docs/releases/v1.0.0-Index.md](docs/releases/v1.0.0-Index.md) — this release's full scope
-- [CHANGELOG.md](CHANGELOG.md)
-- Full database dictionary, ERD, labs, and viva prep ship with **v4.0.0 — Chronicle**
+- [CHANGELOG.md](CHANGELOG.md) and `docs/releases/` (one document per shipped release)
+- [docs/proposal/Project-Proposal.md](docs/proposal/Project-Proposal.md) and
+  [docs/report/Final-Project-Report.md](docs/report/Final-Project-Report.md)
+- [docs/database/Database-Dictionary.md](docs/database/Database-Dictionary.md) — start here
+  for schema, relationships, constraints, indexes, views, and triggers
+- `docs/diagrams/` — ER diagram, architecture, and every major transaction flow (Mermaid)
+- `docs/labs/` — 9 hands-on labs (CRUD, views, triggers, ACID, backup/restore, import/
+  export, migrations, parameterized queries)
+- `docs/testing/` — test strategy/plan/cases and a requirements traceability matrix
+- `docs/manuals/` — installation, configuration, user, administrator, database setup, and
+  troubleshooting guides
+- [docs/viva/Viva-Questions-and-Answers.md](docs/viva/Viva-Questions-and-Answers.md) and
+  [docs/viva/Demonstration-Script.md](docs/viva/Demonstration-Script.md)
+- `docs/grading/` — grading and submission checklists
 
 ## Security Notes
 
@@ -210,14 +221,17 @@ governs which object.
 - Secrets belong in user secrets or environment variables — `appsettings.json` ships with an
   empty connection string on purpose.
 
-## Known Limitations (v3.0.0 — Snapshot)
+## Known Limitations (v4.0.0 — Chronicle)
 
 - Backup/restore requires the `mysqldump`/`mysql` client binaries on the server's PATH.
 - Import supports Customers only, not Invoices/Payments (those originate from the app's own
   transactional workflows, not bulk upload).
 - No scheduled/automatic backups — every run is Administrator-triggered.
-- Full academic documentation package (proposal, report, diagrams, labs, viva prep) ships
-  with v4.0.0 — Chronicle.
+- Diagrams are Mermaid source (render natively on GitHub); no separately exported image
+  files are committed.
+- The testing evidence checklist's screenshots/command-output items are placeholders that
+  need manual capture against a real running instance — see
+  [docs/testing/Evidence-Checklist.md](docs/testing/Evidence-Checklist.md).
 - No read replica or sharding — those ship with v5.0.0 — Replica and v6.0.0 — Shard.
 - Manager/Staff do not have dedicated MVC Areas; role- and branch-scoped authorization is
   enforced in the shared controllers/services instead, to avoid duplicating near-identical
