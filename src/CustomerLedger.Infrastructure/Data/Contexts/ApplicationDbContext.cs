@@ -16,6 +16,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
+    /// <summary>
+    /// Non-generic constructor so ReplicaDbContext (same model, different connection
+    /// string) can subclass this type and pass its own DbContextOptions&lt;ReplicaDbContext&gt;
+    /// through — the standard EF Core pattern for "two DbContexts sharing one model".
+    /// </summary>
+    protected ApplicationDbContext(DbContextOptions options)
+        : base(options)
+    {
+    }
+
     public DbSet<Branch> Branches => Set<Branch>();
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<CustomerAccount> CustomerAccounts => Set<CustomerAccount>();
