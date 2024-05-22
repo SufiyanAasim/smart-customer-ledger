@@ -23,8 +23,19 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 var mySqlVersionSetting = builder.Configuration["MySqlServerVersion"] ?? "8.0.36";
 var serverVersion = new MySqlServerVersion(new Version(mySqlVersionSetting));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// ReplicaConnection falls back to the primary connection string when unset — this project
+// ships a clearly-labeled *simulated* replica (see docs/releases/v5.0.0-Replica.md) rather
+// than requiring native MySQL replication to be configured just to demonstrate the
+// read/write separation pattern. AddDbContextPool reuses context instances across
+// requests instead of allocating one per request — real connection pooling, not just a
+// documented intention.
+var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection") ?? connectionString;
+
+builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, serverVersion));
+
+builder.Services.AddDbContextPool<ReplicaDbContext>(options =>
+    options.UseMySql(replicaConnectionString, serverVersion));
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -64,6 +75,8 @@ builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 builder.Services.AddScoped<IBackupHistoryService, BackupHistoryService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IReconciliationService, ReconciliationService>();
+builder.Services.AddScoped<IReplicaHealthService, ReplicaHealthService>();
+builder.Services.AddScoped<IReplicaAwareReportingService, ReplicaAwareReportingService>();
 builder.Services.AddScoped<IBackupService, CustomerLedger.Infrastructure.Backup.MySqlBackupService>();
 builder.Services.AddScoped<IRestoreService, CustomerLedger.Infrastructure.Backup.MySqlRestoreService>();
 builder.Services.AddScoped<IExportService, ExportService>();
