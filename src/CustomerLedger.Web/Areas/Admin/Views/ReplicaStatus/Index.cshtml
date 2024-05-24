@@ -1,0 +1,51 @@
+@using CustomerLedger.Application.DTOs
+@model ReplicaAwareResult<IReadOnlyList<BranchRevenueSummaryRow>>
+@{
+    ViewData["Title"] = "Replica Status";
+    var isHealthy = (bool)ViewBag.IsReplicaHealthy;
+}
+
+<h1>Replica Status</h1>
+<p class="text-muted">
+    This project ships a <strong>simulated</strong> replica (see
+    <code>docs/releases/v5.0.0-Replica.md</code>) — not native MySQL replication. The
+    report below is read from the replica connection when healthy, and transparently falls
+    back to the primary connection (logged, never silent) when it isn't.
+</p>
+
+<div class="alert @(isHealthy ? "alert-success" : "alert-warning")">
+    Replica health: <strong>@(isHealthy ? "Healthy" : "Unreachable — falling back to primary")</strong>
+</div>
+
+<p>
+    This report was served from:
+    <span class="badge @(Model.ServedFromReplica ? "cl-status-active" : "cl-status-pending")">
+        @(Model.ServedFromReplica ? "Replica" : "Primary (fallback)")
+    </span>
+</p>
+
+<table class="table table-striped cl-table">
+    <thead>
+        <tr>
+            <th>Branch</th>
+            <th>Customers</th>
+            <th>Invoices</th>
+            <th>Billed</th>
+            <th>Collected</th>
+            <th>Outstanding</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var row in Model.Data)
+    {
+        <tr>
+            <td>@row.BranchName (@row.BranchCode)</td>
+            <td>@row.TotalCustomers</td>
+            <td>@row.TotalInvoices</td>
+            <td>@row.TotalBilled.ToString("N2")</td>
+            <td>@row.TotalCollected.ToString("N2")</td>
+            <td>@row.TotalOutstanding.ToString("N2")</td>
+        </tr>
+    }
+    </tbody>
+</table>
