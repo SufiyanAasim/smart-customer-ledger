@@ -5,6 +5,28 @@ All notable changes to CustomerLedger are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [5.0.0] - Replica
+
+### Added
+
+- `ReplicaDbContext` sharing `ApplicationDbContext`'s model, registered with its own
+  `ConnectionStrings:ReplicaConnection` (falls back to `DefaultConnection` if unset).
+- Both primary and replica contexts registered via `AddDbContextPool` for real connection
+  pooling.
+- `IReplicaHealthService`: checks replica reachability fresh on every call (3s timeout).
+- `IReplicaAwareReportingService`: reads `vw_BranchRevenueSummary` from the replica when
+  healthy, falls back to the primary (logged) otherwise.
+- Admin → Replica Status screen showing health and which connection served the last report.
+- `database/replication/`: real native MySQL replication setup scripts
+  (`PrimarySetup.sql`, `ReplicaSetup.sql`) plus this release's actual default — a
+  clearly-labeled **simulated** replica (`SimulatedReplicaSync.sql`) — and
+  `VerifyReplication.sql` covering both modes.
+- `ReplicaHealthServiceTests` (reachable vs. deliberately unreachable connection).
+
+### Changed
+
+Nothing in existing write-path code — Replica is purely additive.
+
 ## [4.0.0] - Chronicle
 
 ### Added
