@@ -1,0 +1,91 @@
+@using CustomerLedger.Application.DTOs
+@model CrossShardReportResult<BranchRevenueSummaryRow>
+@{
+    ViewData["Title"] = "Shard Status";
+    var shards = (IEnumerable<ShardDescriptor>)ViewBag.Shards;
+}
+
+<h1>Shard Status</h1>
+<p class="text-muted">
+    Branch data is logically partitioned across the shards below (routed by
+    <code>IShardResolver</code>, keyed on <code>BranchId</code>). This project's main CRUD
+    workflows are not sharded — this screen and the cross-shard report demonstrate the
+    routing and aggregation pattern in isolation. See
+    <code>docs/releases/v6.0.0-Shard.md</code>.
+</p>
+
+<h4>Registered Shards</h4>
+<table class="table table-sm cl-table">
+    <thead><tr><th>Shard ID</th><th>Name</th><th>Connection</th><th>Active</th></tr></thead>
+    <tbody>
+    @foreach (var shard in shards)
+    {
+        <tr>
+            <td>@shard.ShardId</td>
+            <td>@shard.Name</td>
+            <td>@shard.ConnectionStringName</td>
+            <td>
+                @if (shard.IsActive)
+                {
+                    <span class="badge cl-status-active">Active</span>
+                }
+                else
+                {
+                    <span class="badge cl-status-cancelled">Inactive</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<form asp-action="RunCrossShardReport" method="post" class="mb-3">
+    <button type="submit" class="btn btn-primary">Run Cross-Shard Revenue Report</button>
+</form>
+
+@if (Model is not null)
+{
+    <p>
+        Shards queried: @string.Join(", ", Model.ShardsQueried)
+        &mdash;
+        @if (Model.IsComplete)
+        {
+            <span class="badge cl-status-active">Complete</span>
+        }
+        else
+        {
+            <span class="badge cl-status-overdue">Partial — @Model.ShardFailures.Count shard(s) failed</span>
+        }
+    </p>
+
+    @if (Model.ShardFailures.Any())
+    {
+        <div class="alert alert-warning">
+            <ul class="mb-0">
+                @foreach (var failure in Model.ShardFailures)
+                {
+                    <li><strong>@failure.ShardId</strong>: @failure.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <table class="table table-striped cl-table">
+        <thead>
+            <tr><th>Branch</th><th>Customers</th><th>Invoices</th><th>Billed</th><th>Collected</th><th>Outstanding</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var row in Model.Data)
+        {
+            <tr>
+                <td>@row.BranchName (@row.BranchCode)</td>
+                <td>@row.TotalCustomers</td>
+                <td>@row.TotalInvoices</td>
+                <td>@row.TotalBilled.ToString("N2")</td>
+                <td>@row.TotalCollected.ToString("N2")</td>
+                <td>@row.TotalOutstanding.ToString("N2")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
