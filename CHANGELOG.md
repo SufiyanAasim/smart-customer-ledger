@@ -5,6 +5,30 @@ All notable changes to CustomerLedger are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [6.0.0] - Shard — latest release
+
+**v6.0.0 — Shard is the final and latest release in the planned six-release roadmap.**
+
+### Added
+
+- `ShardDescriptor`, `IShardResolver`/`ShardResolver`: deterministic branch-to-shard routing
+  (`branchId % activeShardCount`) driven by `ShardSettings:Shards` configuration.
+- `IShardDbContextFactory`/`ShardDbContextFactory`: creates an `ApplicationDbContext`
+  pointed at a resolved shard's connection string.
+- `ICrossShardReportingService`/`CrossShardReportingService`: aggregates
+  `vw_BranchRevenueSummary` across every active shard independently, reporting partial
+  failure (which shard failed and why) rather than silently dropping it.
+- Admin → Shard Status screen listing shards and running the cross-shard report.
+- `database/sharding/`: schema-per-shard scripts, an illustrative database-backed shard
+  registry, raw-SQL routing examples, and the manual cross-shard reporting equivalent.
+- `ShardResolverTests` (5 tests, no DB dependency).
+- Full documentation of rebalancing procedure, cross-shard transaction limitations, and a
+  final consistency review across every release to date.
+
+### Changed
+
+Nothing in existing write-path code — Shard is purely additive, like Replica before it.
+
 ## [5.0.0] - Replica
 
 ### Added

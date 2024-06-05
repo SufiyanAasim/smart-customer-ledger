@@ -5,7 +5,7 @@
 **CustomerLedger: A Multi-Branch Customer Billing, Credit, Payment, Installment, and Customer Interaction Management System Using ASP.NET Core MVC and MySQL**
 
 [![.NET](https://img.shields.io/badge/.NET-8.0%20LTS-512BD4?style=flat&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-5.0.0%20Replica-10b981?style=flat)](docs/releases/v5.0.0-Replica.md)
+[![Version](https://img.shields.io/badge/version-6.0.0%20Shard-10b981?style=flat)](docs/releases/v6.0.0-Shard.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=flat)](LICENSE)
 [![Database](https://img.shields.io/badge/database-MySQL%208.0-1e293b?style=flat&logo=mysql&logoColor=white)]()
 
@@ -71,7 +71,9 @@ branch id. See [docs/database/Database-Dictionary.md](docs/database/Database-Dic
 
 ## Current Version
 
-**v5.0.0 — Replica** (this release)
+**Latest Release: v6.0.0 — Shard** — the final release in the planned six-release roadmap.
+No release after Shard is planned by default (see Release Roadmap below for the separately
+discussed, not-yet-started v7.0.0 — Capital).
 
 ## Release Roadmap
 
@@ -221,22 +223,31 @@ governs which object.
 - Secrets belong in user secrets or environment variables — `appsettings.json` ships with an
   empty connection string on purpose.
 
-## Known Limitations (v5.0.0 — Replica)
+## Known Limitations (v6.0.0 — Shard, latest release)
 
+- **Plain modulus routing (`branchId % activeShardCount`) reshuffles branches when the
+  shard count changes** — a production system would use consistent hashing or an explicit,
+  persisted branch-to-shard assignment table instead. See
+  `database/sharding/ShardRoutingExamples.sql` for a worked example of this exact problem.
+- **No distributed transactions across shards** — every financial transaction stays scoped
+  to one branch's shard by design; a workflow needing atomicity across two branches on
+  different shards would need a saga/compensating-action pattern not implemented here.
+- **The main application's CRUD workflows are not actually sharded** — Shard's
+  routing/aggregation layer is demonstrated in isolation (Admin → Shard Status), not
+  retrofitted through every controller, which would be a far larger and riskier change.
 - **Replica ships in simulated mode by default** — a periodic `mysqldump`/`mysql` batch
-  resync, not continuous native MySQL replication. Native replication is fully documented
-  under `database/replication/` but requires two actual MySQL servers to configure. Do not
+  resync, not continuous native MySQL replication (fully documented under
+  `database/replication/`, but requires two actual MySQL servers to configure). Do not
   present the simulated mode as production-grade high availability.
-- Only `vw_BranchRevenueSummary` is currently wired through the replica-aware reporting
-  path — the pattern extends straightforwardly to the other five views but that isn't done
-  in this release.
+- Only `vw_BranchRevenueSummary` is wired through the replica-aware and cross-shard
+  reporting paths — the pattern extends straightforwardly to the other five views but that
+  isn't done in this release.
 - Backup/restore requires the `mysqldump`/`mysql` client binaries on the server's PATH.
 - Import supports Customers only, not Invoices/Payments.
 - No scheduled/automatic backups — every run is Administrator-triggered.
 - The testing evidence checklist's screenshots/command-output items are placeholders that
   need manual capture against a real running instance — see
   [docs/testing/Evidence-Checklist.md](docs/testing/Evidence-Checklist.md).
-- No sharding yet — ships with v6.0.0 — Shard (the final planned release).
 - Manager/Staff do not have dedicated MVC Areas; role- and branch-scoped authorization is
   enforced in the shared controllers/services instead, to avoid duplicating near-identical
   views across three areas.
