@@ -32,6 +32,10 @@
                             <li class="nav-item"><a class="nav-link" asp-controller="Payments" asp-action="Index">Payments</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="InstallmentPlans" asp-action="Index">Installments</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="CustomerInteractions" asp-action="Index">Interactions</a></li>
+                            @if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.BranchManager))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Analytics" asp-action="Index">Analytics</a></li>
+                            }
                             @if (User.IsInRole(Roles.Administrator))
                             {
                                 <li class="nav-item dropdown">
