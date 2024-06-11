@@ -80,6 +80,8 @@ builder.Services.AddScoped<IReplicaAwareReportingService, ReplicaAwareReportingS
 builder.Services.AddSingleton<IShardResolver, CustomerLedger.Infrastructure.Sharding.ShardResolver>();
 builder.Services.AddScoped<CustomerLedger.Infrastructure.Sharding.IShardDbContextFactory, CustomerLedger.Infrastructure.Sharding.ShardDbContextFactory>();
 builder.Services.AddScoped<ICrossShardReportingService, CustomerLedger.Infrastructure.Sharding.CrossShardReportingService>();
+builder.Services.AddScoped<ICustomerRiskScoringService, CustomerLedger.Infrastructure.Analytics.CustomerRiskScoringService>();
+builder.Services.AddScoped<ICustomerSegmentationService, CustomerLedger.Infrastructure.Analytics.CustomerSegmentationService>();
 builder.Services.AddScoped<IBackupService, CustomerLedger.Infrastructure.Backup.MySqlBackupService>();
 builder.Services.AddScoped<IRestoreService, CustomerLedger.Infrastructure.Backup.MySqlRestoreService>();
 builder.Services.AddScoped<IExportService, ExportService>();
