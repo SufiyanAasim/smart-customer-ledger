@@ -23,9 +23,15 @@ public class HomeController : Controller
     }
 
     [AllowAnonymous]
-    public IActionResult Privacy()
+    public IActionResult Credits()
     {
         return View();
+    }
+
+    [AllowAnonymous]
+    public IActionResult Privacy()
+    {
+        return RedirectToAction(nameof(Credits));
     }
 
     [AllowAnonymous]
