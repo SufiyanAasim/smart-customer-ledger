@@ -65,6 +65,14 @@
     background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%) !important;
   }
 
+  .cl-card-stat .cl-counter {
+    color: #ffffff !important;
+  }
+
+  .cl-card-stat .text-dark {
+    color: #ffffff !important;
+  }
+
   .bg-light {
     background-color: #1e293b !important;
     color: #f1f5f9 !important;
