@@ -5,7 +5,7 @@
 **CustomerLedger: A Multi-Branch Customer Billing, Credit, Payment, Installment, and Customer Interaction Management System Using ASP.NET Core MVC and MySQL**
 
 [![.NET](https://img.shields.io/badge/.NET-8.0%20LTS-512BD4?style=flat&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-6.0.0%20Shard-10b981?style=flat)](docs/releases/v6.0.0-Shard.md)
+[![Version](https://img.shields.io/badge/version-7.0.0%20Capital-10b981?style=flat)](docs/releases/v7.0.0-Capital.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=flat)](LICENSE)
 [![Database](https://img.shields.io/badge/database-MySQL%208.0-1e293b?style=flat&logo=mysql&logoColor=white)]()
 
@@ -39,6 +39,8 @@ Electronics shops, furniture stores, repair workshops, and other small/medium re
 - Six required SQL reporting views, safe initial triggers, ACID-transaction SQL
   demonstrations, and 12 explicit parameterized SQL CRUD scripts
 - Search, filtering, sorting, and pagination on every list screen
+- *(v7.0.0 — Capital, bonus)* Customer payment-risk scoring via a from-scratch logistic
+  regression model, and RFM customer segmentation — see Admin/Manager → Analytics
 
 ## Technology Stack
 
@@ -71,9 +73,12 @@ branch id. See [docs/database/Database-Dictionary.md](docs/database/Database-Dic
 
 ## Current Version
 
-**Latest Release: v6.0.0 — Shard** — the final release in the planned six-release roadmap.
-No release after Shard is planned by default (see Release Roadmap below for the separately
-discussed, not-yet-started v7.0.0 — Capital).
+**v6.0.0 — Shard is the final release of the core, specification-mandated six-release
+roadmap.** **v7.0.0 — Capital** is built on top of it as a separately-requested bonus
+extension (a real, from-scratch logistic regression risk model plus RFM customer
+segmentation — see [docs/releases/v7.0.0-Capital.md](docs/releases/v7.0.0-Capital.md)) and
+should be evaluated as an addition, not as satisfying any of the six core releases'
+requirements.
 
 ## Release Roadmap
 
@@ -84,8 +89,8 @@ discussed, not-yet-started v7.0.0 — Capital).
 | v3.0.0 | Snapshot | Backup/restore, import/export, seeders, migration procedures |
 | v4.0.0 | Chronicle | Full academic documentation, diagrams, labs, viva prep |
 | v5.0.0 | Replica | Read/write separation, replica-aware reporting |
-| v6.0.0 | Shard | Logical sharding, cross-shard reporting — **latest release** |
-| v7.0.0 | Capital | AI/ML/data-mining-driven analytics (planned, not yet started) |
+| v6.0.0 | Shard | Logical sharding, cross-shard reporting — **final core release** |
+| v7.0.0 | Capital | Logistic-regression risk scoring + RFM segmentation — **bonus, shipped** |
 
 ## Prerequisites
 
@@ -223,8 +228,14 @@ governs which object.
 - Secrets belong in user secrets or environment variables — `appsettings.json` ships with an
   empty connection string on purpose.
 
-## Known Limitations (v6.0.0 — Shard, latest release)
+## Known Limitations (v7.0.0 — Capital + core v6.0.0 — Shard)
 
+- **Capital's risk-scoring label is a same-day heuristic, not a real historical default
+  outcome** — see [docs/releases/v7.0.0-Capital.md](docs/releases/v7.0.0-Capital.md) for
+  the full, honest methodology discussion. Treat it as a course-level ML demonstration, not
+  a production credit-risk model.
+- **Capital's model retrains from scratch per request and is not train/test-evaluated** —
+  no accuracy/precision/recall metric is reported anywhere.
 - **Plain modulus routing (`branchId % activeShardCount`) reshuffles branches when the
   shard count changes** — a production system would use consistent hashing or an explicit,
   persisted branch-to-shard assignment table instead. See

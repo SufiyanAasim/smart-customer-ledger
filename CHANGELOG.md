@@ -5,7 +5,33 @@ All notable changes to CustomerLedger are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
-## [6.0.0] - Shard — latest release
+## [7.0.0] - Capital — bonus release, outside the core roadmap
+
+Requested separately, mid-project: add a real AI/ML or data-mining concept alongside
+analytics. Built on top of the completed six-release roadmap (v6.0.0 — Shard remains the
+final release of the core, specification-mandated roadmap).
+
+### Added
+
+- `LogisticRegressionModel`: from-scratch binary logistic regression (z-score
+  normalization, sigmoid, batch gradient descent) — real supervised learning, no ML
+  framework dependency.
+- `ICustomerRiskScoringService`/`CustomerRiskScoringService`: extracts 5 features per
+  customer, trains against a heuristic financial-distress label, scores every active
+  customer in scope.
+- `RfmSegmenter` + `ICustomerSegmentationService`/`CustomerSegmentationService`: classic
+  RFM (Recency/Frequency/Monetary) quartile-based customer segmentation.
+- Admin/Branch-Manager → Analytics screen showing risk scores and RFM segments.
+- `database/analytics/CreateAnalyticsViews.sql`: `vw_CustomerRiskFeatures` (additional,
+  non-required view).
+- 7 new unit tests, all passing, zero external dependency — including tests that verify
+  the model actually learns a correct decision boundary on synthetic data.
+
+### Changed
+
+Nothing in existing Index-through-Shard code — Capital is purely additive.
+
+## [6.0.0] - Shard — final release of the core roadmap
 
 **v6.0.0 — Shard is the final and latest release in the planned six-release roadmap.**
 
