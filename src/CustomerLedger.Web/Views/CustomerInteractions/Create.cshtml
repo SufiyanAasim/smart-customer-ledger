@@ -37,7 +37,7 @@
         <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<InteractionStatus>()"></select>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-outline-secondary">Cancel</a>
+    <a asp-area="" asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-outline-secondary">Cancel</a>
 </form>
 
 @section Scripts {
