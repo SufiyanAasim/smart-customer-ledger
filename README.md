@@ -83,8 +83,8 @@ dotnet run --project src/CustomerLedger.Web
 Access the application in your browser at `http://localhost:5260`.
 
 **Default Login Credentials:**
-- Email: `admin@customerledger.local`
-- Password: `Admin@123456!`
+- Email: `admin@scl.com`
+- Password: `admin@584`
 
 ---
 
