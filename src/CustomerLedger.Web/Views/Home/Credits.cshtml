@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Project Credits & Specifications";
+}
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <img src="~/images/logo.png" alt="Smart Customer Ledger Logo" style="height: 180px; max-width: 100%; transform: scale(1.4);" class="mb-4 drop-shadow d-inline-block" />
+        <h1 class="display-4 fw-bold">Smart Customer Ledger</h1>
+        <p class="lead text-muted">A Multi-Branch Customer Billing, Credit, Payment, Installment & Interaction System</p>
+        <span class="badge cl-branch-badge p-2 fs-6">v7.0.0 — Capital Release</span>
+    </div>
+
+    <!-- Author & System Architect Credits Card -->
+    <div class="card p-4 mb-5 border-start border-4 border-success shadow-sm">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3 class="fw-bold mb-1">Author & Engineering Leadership</h3>
+                <h4 class="text-success fw-bold mb-2">Sufiyan Aasim</h4>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge bg-dark text-light">System Architect</span>
+                    <span class="badge bg-dark text-light">UI/UX Designer</span>
+                    <span class="badge bg-dark text-light">AI / ML Ops Engineer</span>
+                    <span class="badge bg-dark text-light">Lead Software Engineer</span>
+                </div>
+                <p class="mb-0 text-muted">
+                    Designed and built the enterprise multi-tier architecture, ACID relational database workflows, logistic regression risk scoring models, and modern responsive design system for Smart Customer Ledger.
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex flex-column gap-2">
+                <a href="https://github.com/SufiyanAasim" target="_blank" rel="noopener noreferrer" class="btn btn-dark btn-lg shadow-sm font-monospace fw-bold">
+                    GitHub Profile
+                </a>
+                <a href="mailto:sufiyanaasim@gmail.com" class="btn btn-outline-success btn-lg shadow-sm font-monospace fw-bold">
+                    Contact Email
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card h-100 p-4">
+                <h3 class="fw-bold mb-3 text-primary">Project Overview</h3>
+                <p>
+                    <strong>Smart Customer Ledger</strong> is built as a complete Relational Database Management System (RDBMS) demonstration,
+                    unifying multi-branch customer billing, credit limit tracking, installment plan remainder splitting, and customer
+                    interaction logging with transactional ACID guarantees in MySQL 8.0.
+                </p>
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-2">Multi-Branch Data Isolation: Enforced in the service layer via <code>ICurrentUserContext</code>.</li>
+                    <li class="mb-2">Role-Based Access Control: Administrator, Branch Manager, Staff/Cashier.</li>
+                    <li class="mb-2">ACID Financial Transactions: Row-level locking on invoice payments and installment plans.</li>
+                    <li class="mb-2">ML Risk Scoring: Logistic regression payment-risk model & RFM customer segmentation.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 p-4">
+                <h3 class="fw-bold mb-3 text-primary">Technology Stack</h3>
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold text-muted">Backend</td>
+                                <td><span class="badge bg-primary fs-6">C# .NET 8 LTS</span> ASP.NET Core MVC</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Database</td>
+                                <td><span class="badge bg-dark fs-6">MySQL 8.0</span> + EF Core 8 & Pomelo</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Direct SQL</td>
+                                <td>Parameterized MySqlConnector Scripts (12 core CRUD scripts)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Auth</td>
+                                <td>ASP.NET Core Identity (Claims & Role Policies)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Frontend</td>
+                                <td>Razor Views, Bootstrap 5 (Charcoal + Emerald Theme), Vanilla JS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-4 mb-5">
+        <h3 class="fw-bold mb-3">Release Roadmap & Version Architecture</h3>
+        <div class="row g-3 text-center">
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v1.0.0 — Index</div>
+                    <div class="small text-muted">Foundation, CRUD, Auth, 6 Views, Triggers</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v2.0.0 — Balance</div>
+                    <div class="small text-muted">ACID Workflows, Reconciliation Service</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v3.0.0 — Snapshot</div>
+                    <div class="small text-muted">Backup/Restore, CSV & JSON Export/Import</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v4.0.0 — Chronicle</div>
+                    <div class="small text-muted">Database Dictionary & Mermaid Diagrams</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v5.0.0 — Replica</div>
+                    <div class="small text-muted">Read/Write Separation & Replica Health</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="fw-bold text-success">v6.0.0 — Shard</div>
+                    <div class="small text-muted">Logical Sharding & Cross-Shard Reporting</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded p-3 h-100 bg-primary text-white">
+                    <div class="fw-bold fs-6">v7.0.0 — Capital</div>
+                    <div class="small opacity-75">Logistic Regression Credit Risk Model & RFM Customer Segmentation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

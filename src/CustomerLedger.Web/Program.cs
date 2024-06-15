@@ -12,30 +12,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException(
-        "Connection string 'DefaultConnection' not found. Configure it via appsettings.json, " +
-        "user secrets, or the ConnectionStrings__DefaultConnection environment variable.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+bool useInMemory = string.IsNullOrWhiteSpace(connectionString) || connectionString.Equals("UseInMemory", StringComparison.OrdinalIgnoreCase);
 
-// A fixed server version avoids a live database round-trip during app startup (which
-// ServerVersion.AutoDetect would require) — adjust MySqlServerVersion in appsettings.json
-// to match your actual MySQL deployment.
-var mySqlVersionSetting = builder.Configuration["MySqlServerVersion"] ?? "8.0.36";
-var serverVersion = new MySqlServerVersion(new Version(mySqlVersionSetting));
+if (useInMemory)
+{
+    builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("CustomerLedgerDev"));
 
-// ReplicaConnection falls back to the primary connection string when unset — this project
-// ships a clearly-labeled *simulated* replica (see docs/releases/v5.0.0-Replica.md) rather
-// than requiring native MySQL replication to be configured just to demonstrate the
-// read/write separation pattern. AddDbContextPool reuses context instances across
-// requests instead of allocating one per request — real connection pooling, not just a
-// documented intention.
-var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection") ?? connectionString;
+    builder.Services.AddDbContextPool<ReplicaDbContext>(options =>
+        options.UseInMemoryDatabase("CustomerLedgerDevReplica"));
+}
+else
+{
+    var mySqlVersionSetting = builder.Configuration["MySqlServerVersion"] ?? "8.0.36";
+    var serverVersion = new MySqlServerVersion(new Version(mySqlVersionSetting));
+    var replicaConnectionString = builder.Configuration.GetConnectionString("ReplicaConnection") ?? connectionString;
 
-builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, serverVersion));
+    builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+        options.UseMySql(connectionString, serverVersion));
 
-builder.Services.AddDbContextPool<ReplicaDbContext>(options =>
-    options.UseMySql(replicaConnectionString, serverVersion));
+    builder.Services.AddDbContextPool<ReplicaDbContext>(options =>
+        options.UseMySql(replicaConnectionString, serverVersion));
+}
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -138,6 +137,11 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
     var configuration = services.GetRequiredService<IConfiguration>();
+
+    if (useInMemory)
+    {
+        await dbContext.Database.EnsureCreatedAsync();
+    }
 
     await RoleSeeder.SeedAsync(roleManager, logger);
     await AdminUserSeeder.SeedAsync(dbContext, userManager, configuration, logger);

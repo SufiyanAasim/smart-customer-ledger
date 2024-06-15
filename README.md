@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/logo.png" alt="CustomerLedger Logo" width="120" />
+
 # CustomerLedger
 
 **CustomerLedger: A Multi-Branch Customer Billing, Credit, Payment, Installment, and Customer Interaction Management System Using ASP.NET Core MVC and MySQL**
