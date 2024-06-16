@@ -40,7 +40,8 @@ builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
-        options.Password.RequiredLength = 8;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireUppercase = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Lockout.MaxFailedAccessAttempts = 5;
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
