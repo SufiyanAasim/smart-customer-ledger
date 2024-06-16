@@ -111,16 +111,19 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted cl-footer py-3 mt-auto">
-        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-            <div>
-                &copy; 2026 - <strong>Smart Customer Ledger</strong> &middot; <span class="badge cl-branch-badge">v7.0.0 Capital</span>
+    @if (ViewData["HideFooter"] as bool? != true)
+    {
+        <footer class="border-top footer text-muted cl-footer py-3 mt-auto">
+            <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    &copy; 2026 - <strong>Smart Customer Ledger</strong> &middot; <span class="badge cl-branch-badge">v7.0.0 Capital</span>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="Home" asp-action="Credits" class="text-light text-decoration-none fw-semibold">Credits & System Specs</a>
+                </div>
             </div>
-            <div>
-                <a asp-area="" asp-controller="Home" asp-action="Credits" class="text-light text-decoration-none fw-semibold">Credits & System Specs</a>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

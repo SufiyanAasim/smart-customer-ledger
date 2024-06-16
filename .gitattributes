@@ -1,14 +1,11 @@
+# Auto detect text files and perform LF normalization
 * text=auto eol=lf
 
-*.cs text eol=lf diff=csharp
-*.cshtml text eol=lf
-*.sql text eol=lf
-*.md text eol=lf
-*.json text eol=lf
-*.slnx text eol=lf
-*.csproj text eol=lf
-
+# Binary files
 *.png binary
 *.jpg binary
+*.jpeg binary
+*.webp binary
 *.ico binary
-*.svg text eol=lf
+*.exe binary
+*.dll binary
