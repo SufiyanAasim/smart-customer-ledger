@@ -38,7 +38,7 @@
         <textarea asp-for="Notes" class="form-control"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Record Payment</button>
-    <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-outline-secondary">Cancel</a>
+    <a asp-area="" asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-outline-secondary">Cancel</a>
 </form>
 
 @section Scripts {

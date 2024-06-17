@@ -1,97 +1,163 @@
 @using CustomerLedger.Application.DTOs
 @model IReadOnlyList<CustomerRiskScore>
 @{
-    ViewData["Title"] = "Customer Analytics";
+    ViewData["Title"] = "Smart Customer Analytics";
     var segments = (IReadOnlyList<CustomerRfmSegment>)ViewBag.Segments;
 }
 
-<h1>Customer Analytics</h1>
-<p class="text-muted">
-    v7.0.0 — Capital: a logistic regression model (trained fresh on this branch's current
-    data) estimates each customer's payment-risk probability, and RFM (Recency/Frequency/
-    Monetary) segmentation groups customers by behavior. See
-    <code>docs/releases/v7.0.0-Capital.md</code> for methodology and honest limitations —
-    this is a real, working demonstration of the technique, not a production credit-scoring
-    system.
-</p>
-
-<h3>Payment Risk Scores</h3>
-@if (!Model.Any())
-{
-    <p class="text-muted">No active customers with sufficient data to score.</p>
-}
-else
-{
-    <table class="table table-striped cl-table">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Risk Probability</th>
-                <th>Band</th>
-                <th>Credit Utilization</th>
-                <th>Unpaid Invoice Ratio</th>
-                <th>Total Outstanding</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var score in Model)
-        {
-            <tr>
-                <td>@score.CustomerName (@score.CustomerCode)</td>
-                <td>@((score.RiskProbability * 100).ToString("F1"))%</td>
-                <td>
-                    <span class="badge @(score.RiskBand == "High" ? "cl-status-overdue" : score.RiskBand == "Medium" ? "cl-status-pending" : "cl-status-active")">
-                        @score.RiskBand
-                    </span>
-                </td>
-                <td>@((score.Features.CreditUtilization * 100).ToString("F0"))%</td>
-                <td>@((score.Features.UnpaidInvoiceRatio * 100).ToString("F0"))%</td>
-                <td>@score.Features.TotalOutstanding.ToString("N2")</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
-
-<h3 class="mt-4">RFM Customer Segments</h3>
-@if (!segments.Any())
-{
-    <p class="text-muted">No active customers to segment.</p>
-}
-else
-{
-    <div class="row mb-3">
-    @foreach (var group in segments.GroupBy(s => s.SegmentName).OrderByDescending(g => g.Count()))
-    {
-        <div class="col-auto">
-            <span class="badge cl-branch-badge">@group.Key: @group.Count()</span>
-        </div>
-    }
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-1 fw-bold text-gradient">Smart Customer Intelligence & Risk Analytics</h1>
+        <p class="text-muted mb-0">Logistic Regression Payment-Risk Models & Recency/Frequency/Monetary (RFM) Segmentation</p>
     </div>
+</div>
 
-    <table class="table table-sm cl-table">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Segment</th>
-                <th>Recency (days)</th>
-                <th>Frequency</th>
-                <th>Monetary</th>
-                <th>R / F / M Score</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var segment in segments.OrderBy(s => s.SegmentName))
+<!-- Smart AI Assistant Widget (v7.0.0 Capital Smart Feature) -->
+<div class="card mb-4 border-start border-4 border-info shadow-sm" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);">
+    <div class="card-body p-4">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <h5 class="fw-bold mb-0 text-info">Smart AI Credit & Ledger Assistant</h5>
+            <span class="badge bg-info text-dark font-monospace">Capital AI Core</span>
+        </div>
+        <p class="mb-3 text-muted small">
+            Analyzes historical payment timelines, credit limits, and interaction frequency using lightweight Machine Learning to automatically score account default probability.
+        </p>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="p-3 bg-body rounded border">
+                    <div class="text-muted small fw-semibold">Scored Portfolio Accounts</div>
+                    <div class="fs-4 fw-bold text-primary">@Model.Count Accounts</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-body rounded border">
+                    <div class="text-muted small fw-semibold">High Risk Customer Alerts</div>
+                    <div class="fs-4 fw-bold text-danger">@Model.Count(m => m.RiskBand == "High") Accounts</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-body rounded border">
+                    <div class="text-muted small fw-semibold">Top Customer Segment</div>
+                    <div class="fs-4 fw-bold text-success">
+                        @(segments.GroupBy(s => s.SegmentName).OrderByDescending(g => g.Count()).FirstOrDefault()?.Key ?? "Champions")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold mb-0">Logistic Regression Payment Risk Model</h4>
+        <div class="cl-search-box">
+            <input type="text" class="form-control form-control-sm cl-table-search" data-table-target="riskTable" placeholder="Search customer or risk..." />
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Any())
         {
-            <tr>
-                <td>@segment.CustomerName (@segment.CustomerCode)</td>
-                <td>@segment.SegmentName</td>
-                <td>@segment.RecencyDays.ToString("F0")</td>
-                <td>@segment.Frequency</td>
-                <td>@segment.Monetary.ToString("N2")</td>
-                <td>@segment.RecencyScore / @segment.FrequencyScore / @segment.MonetaryScore</td>
-            </tr>
+            <div class="p-4 text-muted">No active customers with sufficient data to score.</div>
         }
-        </tbody>
-    </table>
-}
+        else
+        {
+            <div class="table-responsive cl-table-wrapper">
+                <table class="table cl-table" id="riskTable">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Risk Score</th>
+                            <th>Band</th>
+                            <th>Credit Utilization</th>
+                            <th>Unpaid Ratio</th>
+                            <th>Total Outstanding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var score in Model)
+                    {
+                        var pct = (int)(score.RiskProbability * 100);
+                        var barColor = score.RiskBand == "High" ? "bg-danger" : score.RiskBand == "Medium" ? "bg-warning" : "bg-success";
+                        <tr>
+                            <td class="fw-semibold">@score.CustomerName <span class="text-muted small">(@score.CustomerCode)</span></td>
+                            <td style="min-width: 140px;">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress flex-grow-1" style="height: 8px;">
+                                        <div class="progress-bar @barColor" role="progressbar" style="width: @pct%;" aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span class="small fw-bold">@pct%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge @(score.RiskBand == "High" ? "cl-status-overdue" : score.RiskBand == "Medium" ? "cl-status-pending" : "cl-status-active")">
+                                    @score.RiskBand
+                                </span>
+                            </td>
+                            <td>@((score.Features.CreditUtilization * 100).ToString("F0"))%</td>
+                            <td>@((score.Features.UnpaidInvoiceRatio * 100).ToString("F0"))%</td>
+                            <td class="fw-bold">@score.Features.TotalOutstanding.ToString("N2")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold mb-0">RFM Customer Segmentation</h4>
+        <div class="cl-search-box">
+            <input type="text" class="form-control form-control-sm cl-table-search" data-table-target="rfmTable" placeholder="Search RFM customer..." />
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (!segments.Any())
+        {
+            <div class="p-4 text-muted">No active customers to segment.</div>
+        }
+        else
+        {
+            <div class="px-4 py-2 border-bottom d-flex flex-wrap gap-2 align-items-center">
+                <span class="small fw-bold text-muted me-2">Segment Summary:</span>
+                @foreach (var group in segments.GroupBy(s => s.SegmentName).OrderByDescending(g => g.Count()))
+                {
+                    <span class="badge cl-branch-badge">@group.Key: <strong>@group.Count()</strong></span>
+                }
+            </div>
+
+            <div class="table-responsive cl-table-wrapper">
+                <table class="table cl-table" id="rfmTable">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Segment</th>
+                            <th>Recency (Days)</th>
+                            <th>Frequency</th>
+                            <th>Monetary</th>
+                            <th>R / F / M Breakdown</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var segment in segments.OrderBy(s => s.SegmentName))
+                    {
+                        <tr>
+                            <td class="fw-semibold">@segment.CustomerName <span class="text-muted small">(@segment.CustomerCode)</span></td>
+                            <td><span class="badge cl-status-active">@segment.SegmentName</span></td>
+                            <td>@segment.RecencyDays.ToString("F0") d</td>
+                            <td>@segment.Frequency txns</td>
+                            <td class="fw-bold">@segment.Monetary.ToString("N2")</td>
+                            <td>
+                                <span class="badge bg-dark text-light">R:@segment.RecencyScore</span>
+                                <span class="badge bg-dark text-light">F:@segment.FrequencyScore</span>
+                                <span class="badge bg-dark text-light">M:@segment.MonetaryScore</span>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

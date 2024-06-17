@@ -27,7 +27,7 @@ else
         @foreach (var interaction in Model.Items)
         {
             <tr>
-                <td><a asp-controller="Customers" asp-action="Details" asp-route-id="@interaction.CustomerId">@interaction.Customer?.FullName</a></td>
+                <td><a asp-area="" asp-controller="Customers" asp-action="Details" asp-route-id="@interaction.CustomerId">@interaction.Customer?.FullName</a></td>
                 <td>@interaction.InteractionType</td>
                 <td>@interaction.Subject</td>
                 <td>@interaction.InteractionDate.ToString("g")</td>

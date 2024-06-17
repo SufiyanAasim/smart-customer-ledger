@@ -8,7 +8,7 @@
 
 <dl class="row">
     <dt class="col-sm-3">Invoice</dt>
-    <dd class="col-sm-9"><a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId">@Model.Invoice?.InvoiceNumber</a></dd>
+    <dd class="col-sm-9"><a asp-area="" asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId">@Model.Invoice?.InvoiceNumber</a></dd>
     <dt class="col-sm-3">Customer</dt>
     <dd class="col-sm-9">@Model.Customer?.FullName</dd>
     <dt class="col-sm-3">Date</dt>

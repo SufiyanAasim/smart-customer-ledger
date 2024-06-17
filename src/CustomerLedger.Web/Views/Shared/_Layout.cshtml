@@ -4,73 +4,85 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CustomerLedger</title>
-    <link rel="icon" type="image/svg+xml" href="~/images/logo.svg" />
+    <title>@ViewData["Title"] - Smart Customer Ledger</title>
+    <link rel="icon" type="image/png" href="~/images/logo.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark cl-navbar mb-3">
+        <nav class="navbar navbar-expand-md navbar-dark cl-navbar mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/logo.svg" alt="CustomerLedger" />
-                    CustomerLedger
+                <!-- Enlarged Brand Logo Only (No text) -->
+                <a class="navbar-brand d-flex align-items-center me-4" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="Smart Customer Ledger Logo" class="cl-navbar-logo-enlarged" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 align-items-center gap-1">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Customers" asp-action="Index">Customers</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Invoices" asp-action="Index">Invoices</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Payments" asp-action="Index">Payments</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="InstallmentPlans" asp-action="Index">Installments</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="CustomerInteractions" asp-action="Index">Interactions</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a></li>
                             @if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.BranchManager))
                             {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Analytics" asp-action="Index">Analytics</a></li>
+                                <li class="nav-item"><a class="nav-link text-info fw-semibold" asp-area="" asp-controller="Analytics" asp-action="Index">Analytics</a></li>
                             }
-                            @if (User.IsInRole(Roles.Administrator))
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Branches" asp-action="Index">Branches</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="AuditLogs" asp-action="Index">Audit Logs</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Reconciliation" asp-action="Index">Reconciliation</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ReplicaStatus" asp-action="Index">Replica Status</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ShardStatus" asp-action="Index">Shard Status</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="BackupHistories" asp-action="Index">Backup History</a></li>
-                                    </ul>
-                                </li>
-                            }
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Customers" asp-action="Index">Customers</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Invoices" asp-action="Index">Invoices</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="InstallmentPlans" asp-action="Index">Installments</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="CustomerInteractions" asp-action="Index">Interactions</a></li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-center ms-auto gap-2">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             var branchClaim = User.FindFirst("BranchId")?.Value;
-                            <li class="nav-item align-self-center me-2">
-                                <span class="badge cl-branch-badge">
+                            <li class="nav-item">
+                                <span class="badge cl-branch-badge py-2 px-3">
                                     @(User.IsInRole(Roles.Administrator) ? "All Branches" : branchClaim is null ? "No Branch" : $"Branch #{branchClaim}")
                                 </span>
                             </li>
-                            <li class="nav-item align-self-center me-2 text-light small">@User.Identity!.Name</li>
                             <li class="nav-item">
-                                <form asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
+                                <button id="themeToggleBtn" class="btn btn-sm btn-outline-light px-3 py-1 fw-semibold" type="button" title="Toggle Light/Dark Theme">Dark/Light Mode</button>
+                            </li>
+                            @if (User.IsInRole(Roles.Administrator))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle btn btn-outline-secondary text-light border-0 py-1 px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end cl-dropdown-dark shadow-lg">
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Branches" asp-action="Index">Branches</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Users" asp-action="Index">Users & Access</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="AuditLogs" asp-action="Index">Audit Logs</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Reconciliation" asp-action="Index">Reconciliation</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="ReplicaStatus" asp-action="Index">Replica Status</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="ShardStatus" asp-action="Index">Shard Status</a></li>
+                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="BackupHistories" asp-action="Index">Backup History</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            <li class="nav-item me-2">
+                                <span class="text-light small opacity-75">@User.Identity!.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger cl-btn-logout-red">
+                                        Logout
+                                    </button>
                                 </form>
                             </li>
                         }
                         else
                         {
+                            <li class="nav-item me-2">
+                                <button id="themeToggleBtn" class="btn btn-sm btn-outline-light fw-semibold" type="button" title="Toggle Light/Dark Theme">Dark/Light Mode</button>
+                            </li>
                             <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a></li>
                         }
                     </ul>
@@ -78,18 +90,19 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
+
+    <div class="container-fluid flex-grow-1">
         <main role="main" class="pb-3">
             @if (TempData["StatusMessage"] is string statusMessage)
             {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                     @statusMessage
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
             @if (TempData["ErrorMessage"] is string errorMessage)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
                     @errorMessage
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
@@ -98,12 +111,17 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted cl-footer py-3 mt-4">
-        <div class="container-fluid">
-            &copy; 2026 - CustomerLedger - v1.0.0 Index &middot;
-            <a asp-controller="Home" asp-action="Privacy" class="text-light">Privacy</a>
+    <footer class="border-top footer text-muted cl-footer py-3 mt-auto">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                &copy; 2026 - <strong>Smart Customer Ledger</strong> &middot; <span class="badge cl-branch-badge">v7.0.0 Capital</span>
+            </div>
+            <div>
+                <a asp-area="" asp-controller="Home" asp-action="Credits" class="text-light text-decoration-none fw-semibold">Credits & System Specs</a>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

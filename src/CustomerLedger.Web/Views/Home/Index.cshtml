@@ -3,70 +3,79 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1 class="mb-4">Dashboard</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-1 fw-bold text-gradient">Executive Dashboard</h1>
+        <p class="text-muted mb-0">Real-time financial ledgers, customer tracking, and branch activity summary.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary" asp-area="" asp-controller="Analytics" asp-action="Index">Risk & RFM Analytics</a>
+    </div>
+</div>
 
-<div class="row g-3">
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Active Customers</div>
-                <div class="fs-3 fw-bold">@Model.TotalActiveCustomers</div>
-            </div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100">
+            <div class="text-muted small fw-semibold text-uppercase">Active Customers</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.TotalActiveCustomers">@Model.TotalActiveCustomers</div>
+            <div class="text-success small fw-semibold">Verified accounts</div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Active Invoices</div>
-                <div class="fs-3 fw-bold">@Model.TotalActiveInvoices</div>
-            </div>
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100" style="border-left-color: var(--cl-cyan-500);">
+            <div class="text-muted small fw-semibold text-uppercase">Active Invoices</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.TotalActiveInvoices">@Model.TotalActiveInvoices</div>
+            <div class="text-info small fw-semibold">Billable</div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Outstanding Balance</div>
-                <div class="fs-3 fw-bold">@Model.TotalOutstandingBalance.ToString("N2")</div>
-            </div>
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100" style="border-left-color: var(--cl-amber-500);">
+            <div class="text-muted small fw-semibold text-uppercase">Outstanding Balance</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.TotalOutstandingBalance" data-currency="true">@Model.TotalOutstandingBalance.ToString("N2")</div>
+            <div class="text-warning small fw-semibold">Receivable</div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Overdue Installments</div>
-                <div class="fs-3 fw-bold">@Model.OverdueInstallmentCount</div>
-            </div>
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100" style="border-left-color: var(--cl-red-500);">
+            <div class="text-muted small fw-semibold text-uppercase">Overdue Installments</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.OverdueInstallmentCount">@Model.OverdueInstallmentCount</div>
+            <div class="text-danger small fw-semibold">Action required</div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Open Interactions</div>
-                <div class="fs-3 fw-bold">@Model.OpenInteractionCount</div>
-            </div>
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100" style="border-left-color: var(--cl-indigo-500);">
+            <div class="text-muted small fw-semibold text-uppercase">Open Interactions</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.OpenInteractionCount">@Model.OpenInteractionCount</div>
+            <div class="text-indigo small fw-semibold">Follow-ups</div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <div class="card cl-card-stat h-100">
-            <div class="card-body">
-                <div class="text-muted small">Collected Today</div>
-                <div class="fs-3 fw-bold">@Model.TodaysCollectedAmount.ToString("N2")</div>
-            </div>
+    <div class="col-md-4 col-xl-2">
+        <div class="card cl-card-stat p-3 h-100" style="border-left-color: var(--cl-emerald-500);">
+            <div class="text-muted small fw-semibold text-uppercase">Collected Today</div>
+            <div class="fs-2 fw-bold text-dark cl-counter" data-target="@Model.TodaysCollectedAmount" data-currency="true">@Model.TodaysCollectedAmount.ToString("N2")</div>
+            <div class="text-success small fw-semibold">Inflows</div>
         </div>
     </div>
 </div>
 
-<div class="row mt-4 g-3">
-    <div class="col-md-3">
-        <a class="btn btn-primary w-100" asp-controller="Customers" asp-action="Create">+ New Customer</a>
+<div class="card mb-4">
+    <div class="card-header bg-transparent border-0 pt-3">
+        <h5 class="fw-bold mb-0">Quick Actions & Workflows</h5>
     </div>
-    <div class="col-md-3">
-        <a class="btn btn-primary w-100" asp-controller="Invoices" asp-action="Create">+ New Invoice</a>
-    </div>
-    <div class="col-md-3">
-        <a class="btn btn-outline-secondary w-100" asp-controller="Payments" asp-action="Index">View Payments</a>
-    </div>
-    <div class="col-md-3">
-        <a class="btn btn-outline-secondary w-100" asp-controller="CustomerInteractions" asp-action="Create">Log Interaction</a>
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <a class="btn btn-primary w-100 py-2 fw-semibold" asp-area="" asp-controller="Customers" asp-action="Create">Register Customer</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-primary w-100 py-2 fw-semibold" asp-area="" asp-controller="Invoices" asp-action="Create">Create Invoice</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-outline-primary w-100 py-2 fw-semibold" asp-area="" asp-controller="Payments" asp-action="Index">Record / Review Payments</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-outline-secondary w-100 py-2 fw-semibold" asp-area="" asp-controller="CustomerInteractions" asp-action="Create">Log Interaction</a>
+            </div>
+        </div>
     </div>
 </div>
