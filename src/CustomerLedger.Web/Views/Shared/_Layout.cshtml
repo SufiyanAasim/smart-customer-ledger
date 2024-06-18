@@ -42,46 +42,55 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             var branchClaim = User.FindFirst("BranchId")?.Value;
-                            <li class="nav-item">
-                                <span class="badge cl-branch-badge py-2 px-3">
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="badge cl-branch-badge d-inline-flex align-items-center justify-content-center py-2 px-3 my-auto fs-6 shadow-sm">
                                     @(User.IsInRole(Roles.Administrator) ? "All Branches" : branchClaim is null ? "No Branch" : $"Branch #{branchClaim}")
                                 </span>
                             </li>
-                            <li class="nav-item">
-                                <button id="themeToggleBtn" class="btn btn-sm btn-outline-light px-3 py-1 fw-semibold" type="button" title="Toggle Light/Dark Theme">Dark/Light Mode</button>
+                            <li class="nav-item d-flex align-items-center ms-1">
+                                <a class="btn btn-sm btn-outline-info text-info fw-bold rounded-pill px-3 py-1.5 shadow-sm d-inline-flex align-items-center gap-1" asp-area="" asp-controller="Home" asp-action="Credits">
+                                    <span>Credits & Specs</span>
+                                </a>
                             </li>
-                            @if (User.IsInRole(Roles.Administrator))
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle btn btn-outline-secondary text-light border-0 py-1 px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Admin
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end cl-dropdown-dark shadow-lg">
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Branches" asp-action="Index">Branches</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Users" asp-action="Index">Users & Access</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="AuditLogs" asp-action="Index">Audit Logs</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="Reconciliation" asp-action="Index">Reconciliation</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="ReplicaStatus" asp-action="Index">Replica Status</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="ShardStatus" asp-action="Index">Shard Status</a></li>
-                                        <li><a class="dropdown-item py-1" asp-area="Admin" asp-controller="BackupHistories" asp-action="Index">Backup History</a></li>
-                                    </ul>
-                                </li>
-                            }
-                            <li class="nav-item me-2">
-                                <span class="text-light small opacity-75">@User.Identity!.Name</span>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-danger cl-btn-logout-red">
-                                        Logout
-                                    </button>
-                                </form>
+                            <li class="nav-item dropdown d-flex align-items-center ms-1">
+                                <a class="btn btn-sm btn-dark text-light border-secondary dropdown-toggle d-flex align-items-center gap-2 py-1.5 px-3 rounded-pill shadow-sm fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="small">@User.Identity!.Name</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end cl-dropdown-dark shadow-lg p-2" style="min-width: 210px;">
+                                    <li class="px-1 py-1 border-bottom border-secondary mb-1">
+                                        <button id="themeToggleBtn" class="btn btn-sm btn-outline-light w-100 text-start fw-semibold py-1.5 px-2" type="button">
+                                            Dark/Light Mode
+                                        </button>
+                                    </li>
+                                    @if (User.IsInRole(Roles.Administrator))
+                                    {
+                                        <li class="dropdown-header text-muted small fw-bold text-uppercase px-2 pt-2">Admin Tools</li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="Branches" asp-action="Index">Branches</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="Users" asp-action="Index">Users & Access</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="AuditLogs" asp-action="Index">Audit Logs</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="Reconciliation" asp-action="Index">Reconciliation</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="ReplicaStatus" asp-action="Index">Replica Status</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="ShardStatus" asp-action="Index">Shard Status</a></li>
+                                        <li><a class="dropdown-item rounded py-1 px-2" asp-area="Admin" asp-controller="BackupHistories" asp-action="Index">Backup History</a></li>
+                                        <li><hr class="dropdown-divider border-secondary my-1" /></li>
+                                    }
+                                    <li>
+                                        <form asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                            <button type="submit" class="dropdown-item rounded py-1 px-2 text-danger fw-bold">
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item me-2">
                                 <button id="themeToggleBtn" class="btn btn-sm btn-outline-light fw-semibold" type="button" title="Toggle Light/Dark Theme">Dark/Light Mode</button>
+                            </li>
+                            <li class="nav-item me-2">
+                                <a class="btn btn-sm btn-outline-info text-info fw-bold rounded-pill px-3 py-1.5 shadow-sm" asp-area="" asp-controller="Home" asp-action="Credits">Credits & Specs</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a></li>
                         }

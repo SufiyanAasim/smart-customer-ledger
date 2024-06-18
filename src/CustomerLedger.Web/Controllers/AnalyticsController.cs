@@ -24,12 +24,13 @@ public class AnalyticsController : Controller
         _segmentationService = segmentationService;
     }
 
-    public async Task<IActionResult> Index(int? branchId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Index(int? branchId, string? mode, CancellationToken cancellationToken)
     {
         var riskScores = await _riskScoringService.ScoreCustomersAsync(branchId, cancellationToken);
         var segments = await _segmentationService.SegmentCustomersAsync(branchId, cancellationToken);
 
         ViewBag.Segments = segments;
+        ViewBag.Mode = mode;
         return View(riskScores);
     }
 }
