@@ -1,82 +1,107 @@
+<div align="center">
+
+<img src="src/CustomerLedger.Web/wwwroot/images/logo.png" alt="Smart Customer Ledger Logo" width="110" />
+
 # Smart Customer Ledger
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Version](https://img.shields.io/badge/version-v7.0.0%20Capital-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![.NET Core](https://img.shields.io/badge/.NET-8.0-purple)
+**A multi-branch customer billing, credit limit, payment, installment, and customer interaction tracking system**
 
-## Project Overview
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat&logo=dotnet&logoColor=white)](docs/development/Development.md)
+[![Version](https://img.shields.io/badge/version-7.0.0%20Capital-10b981?style=flat)](docs/releases/v7.0.0-Capital.md)
+[![Database](https://img.shields.io/badge/Database-MySQL%208.0-003B57?style=flat&logo=mysql&logoColor=white)](docs/architecture/Architecture.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-64748b?style=flat)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-0ea5e9?style=flat)](CONTRIBUTING.md)
 
-**Smart Customer Ledger** is a multi-branch customer billing, credit limit, payment, installment, and customer interaction tracking system built with C# .NET 8 LTS, ASP.NET Core MVC, EF Core 8, and MySQL 8.0.
+Manages multi-branch customer accounts, processes atomic payment settlements with remainder splitting, calculates credit default probabilities using logistic regression machine learning, segments accounts via RFM analysis, isolates branch access via `ICurrentUserContext`, and runs as a standalone single-file `.exe` bundle — all with zero external dependencies.
 
-It enforces strict multi-branch data isolation via `ICurrentUserContext`, implements ACID transaction handling with row-level locking, and features an integrated Machine Learning payment-risk model and RFM customer segmentation engine.
+[**Download .exe**](publish/CustomerLedger.Web.exe) · [**Changelog**](CHANGELOG.md) · [**Roadmap**](ROADMAP.md) · [**Report a Bug**](.github/ISSUE_TEMPLATE/bug_report.md)
 
----
-
-## Features
-
-- **Multi-Branch Isolation**: Strict data access boundaries per branch manager or cashier role.
-- **ACID Financial Workflows**: Atomic payments, automated installment remainder splitting, and account balance sweeps.
-- **Logistic Regression Risk Model**: From-scratch supervised machine learning to predict account default probability.
-- **RFM Customer Segmentation**: Recency, Frequency, and Monetary quartile scoring with automated segment categorization.
-- **Theme Mode Switcher**: Seamless dark/light theme switching with state persistence.
-- **Enlarged High-Res Brand Logo**: Clean visual branding across all views.
-- **Standalone Windows Executable**: Zero-dependency single-file `.exe` bundle for offline execution.
+</div>
 
 ---
 
-## Screenshots
+## ✨ Features
 
-- **Executive Dashboard**: Clean dark/light high-contrast analytics dashboard.
-- **Credits & System Specs**: Author leadership, technology stack, and release roadmap.
+### 🔐 User Portal & Multi-Branch Access Control
+- Role-based security (Administrator, Branch Manager, Staff/Cashier) with ASP.NET Core Identity
+- Default administrator credentials (`admin@scl.com` / `admin@584`)
+- Strict multi-branch data isolation enforced in service layer via `ICurrentUserContext`
+
+### 💳 Ledger Management Engine
+- Customer registration with credit limit validation and account balance tracking
+- Billable invoice generation, payment allocation, and installment schedule splitting
+- Customer interaction logging for support follow-ups and account notes
+
+### ⚡ ACID Financial Settlement Workflows
+- Row-level database locking during invoice payments to prevent concurrent balance drift
+- Atomic payment reversal and installment remainder redistribution
+- Automated account balance reconciliation service
+
+### 🤖 ML Credit Risk & RFM Analytics
+- From-scratch supervised Logistic Regression model predicting customer payment default probability
+- Recency, Frequency, and Monetary (RFM) quartile scoring with automated customer segment classification
+- Dedicated Smart AI Credit & Ledger Assistant mode (`/Analytics?mode=smart`)
+
+### 🎨 Responsive Dark/Light Theme System
+- Charcoal and Emerald modern design system with 1-click persistent theme toggle
+- Enlarged high-resolution branding logo across all screens
+- Unified right header dropdown pill housing theme options, admin links, and red logout button
+
+### 📄 Executive Audit & Backup Utilities
+- Database backup/restore engine supporting `mysqldump` and SQL script execution
+- CSV/JSON data import/export utilities with formula injection neutralization
 
 ---
 
-## Architecture
-
-Smart Customer Ledger follows a clean 4-tier modular architecture:
+## 🏗️ Architecture
 
 ```
-src/
-├── CustomerLedger.Domain/          # Core Domain Entities, Enums, Constants
-├── CustomerLedger.Application/     # Services, Interfaces, DTOs, Business Rules
-├── CustomerLedger.Infrastructure/  # EF Core DbContext, Migrations, MySQL Repositories
-└── CustomerLedger.Web/             # ASP.NET Core MVC Web Layer, Views, Controllers
+┌──────────────────────────────────────────────────────────────────────────┐
+│                           CustomerLedger.Web                             │
+│       ASP.NET Core MVC (Controllers, Razor Views, Identity Auth)        │
+└────────┬───────────────┬──────────────┬──────────────────┬───────────────┘
+         │               │              │                  │
+         ▼               ▼              ▼                  ▼
+CustomerService   InvoiceService  PaymentService  CustomerRiskScoringService
+(Profile mgmt)   (Billing logic)  (ACID settlement) (Logistic Regression ML)
+         │               │              │                  │
+         └───────────────┴──────┬───────┴──────────────────┘
+                                │
+                                ▼
+                   CustomerLedger.Infrastructure
+                    (EF Core DbContext & MySQL)
 ```
 
----
-
-## Technology Stack
-
-- **Framework**: C# .NET 8 LTS (ASP.NET Core MVC)
-- **ORM & DB**: Entity Framework Core 8, Pomelo MySQL, MySqlConnector
-- **Authentication**: ASP.NET Core Identity (Claims & Policy-Based RBAC)
-- **Frontend**: Razor Views, Bootstrap 5 (Charcoal + Emerald Theme), Vanilla JS
-- **Testing**: xUnit, Moq, FluentAssertions
+Full architectural breakdown in [docs/architecture/Architecture.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/docs/architecture/Architecture.md).
 
 ---
 
-## Requirements
+## 🛠️ Technology Stack
 
+| Component | Framework / Tool | Purpose |
+|-----------|------------------|---------|
+| **Core Framework** | C# .NET 8 LTS | Web application runtime & MVC pipeline |
+| **Database ORM** | EF Core 8 & Pomelo | Relational database mapping & migrations |
+| **Database** | MySQL 8.0 / InMemory | Primary data persistence engine |
+| **Authentication** | ASP.NET Core Identity | Claims-based authentication & RBAC |
+| **Frontend** | Razor Views & Bootstrap 5 | Modern responsive web UI |
+| **Testing** | xUnit & Moq | Unit and integration test validation |
+
+---
+
+## 🚀 Getting Started
+
+### Requirements
+- Windows OS / Linux / macOS
 - .NET 8.0 SDK or higher
-- MySQL 8.0 (Optional; defaults to In-Memory DB mode in Development)
-- Windows x64 / Linux / macOS
 
----
-
-## Installation
+### Quick Start
 
 ```bash
 git clone https://github.com/SufiyanAasim/Smart-Customer-Ledger.git
 cd "Smart-Customer-Ledger"
-dotnet restore
-```
-
----
-
-## Quick Start
-
-```bash
+dotnet build
 dotnet run --project src/CustomerLedger.Web
 ```
 
@@ -88,117 +113,98 @@ Access the application in your browser at `http://localhost:5260`.
 
 ---
 
-## Configuration
+## 🗂️ Project Structure
 
-Configuration settings are stored in `src/CustomerLedger.Web/appsettings.json` and `appsettings.Development.json`.
-
----
-
-## Environment Variables
-
-| Variable | Required | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `ASPNETCORE_ENVIRONMENT` | No | `Development` | Hosting environment mode |
-| `PORT` | No | `5260` | Web server listening port |
-| `ConnectionStrings__DefaultConnection` | Yes | `UseInMemory` | MySQL connection string or InMemory fallback |
-
----
-
-## Running Locally
-
-```bash
-dotnet build
-dotnet run --project src/CustomerLedger.Web
+```
+Smart Customer Ledger/
+├── .github/
+│   ├── ISSUE_TEMPLATE/            # Bug report, feature, and security templates
+│   ├── workflows/                 # CI build and test GitHub Actions
+│   ├── CODEOWNERS
+│   ├── dependabot.yml
+│   └── PULL_REQUEST_TEMPLATE.md
+├── docs/
+│   ├── architecture/ (Architecture.md)
+│   ├── deployment/ (Deployment.md)
+│   ├── api/ (API.md)
+│   ├── guides/
+│   ├── releases/ (v1.0.0-Index.md to v7.0.0-Capital.md)
+│   ├── development/
+│   └── troubleshooting/
+├── publish/
+│   └── CustomerLedger.Web.exe    # Standalone single-file executable
+├── src/
+│   ├── CustomerLedger.Domain/     # Core domain entities & value objects
+│   ├── CustomerLedger.Application/# Service interfaces, DTOs & business rules
+│   ├── CustomerLedger.Infrastructure/# EF Core DbContext, repositories & ML services
+│   └── CustomerLedger.Web/        # Web MVC views, controllers & static assets
+├── tests/
+│   ├── CustomerLedger.UnitTests/  # Business logic & ML unit tests (32 passing)
+│   ├── CustomerLedger.DatabaseTests/
+│   └── CustomerLedger.IntegrationTests/
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+├── README.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── RELEASE.md
+├── ROADMAP.md
+├── SECURITY.md
+└── SUPPORT.md
 ```
 
 ---
 
-## Docker
+## 🧪 Testing
 
-```bash
-docker-compose up --build
-```
-
----
-
-## Cloud Deployment
-
-Deploy the containerized app or execute the self-contained executable on any Windows x64 server environment.
-
----
-
-## API Documentation
-
-Detailed endpoint schemas and domain request models are documented in [docs/api/API.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/docs/api/API.md).
-
----
-
-## Project Structure
-
-Refer to section 1 for the comprehensive file and directory tree layout.
-
----
-
-## Testing
-
-Run unit tests via CLI:
+Run the automated xUnit unit test suite via CLI:
 
 ```bash
 dotnet test tests/CustomerLedger.UnitTests/CustomerLedger.UnitTests.csproj
 ```
 
----
-
-## Performance
-
-Sub-millisecond ledger aggregation query execution times backed by optimized database indexing.
+**Test Status:** `32 Passed, 0 Failed, 0 Skipped`.
 
 ---
 
-## Security
+## 📦 Building Standalone Executable (.exe)
 
-Enforces HTTPS redirection, parameterized SQL script sanitization, and Identity claim policies.
+Compile the self-contained single-file Windows executable with embedded application icon:
 
----
+```powershell
+dotnet publish src/CustomerLedger.Web/CustomerLedger.Web.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish/
+```
 
-## Contributing
-
-Please review [CONTRIBUTING.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/CONTRIBUTING.md) for contribution guidelines.
-
----
-
-## Roadmap
-
-Planned releases and feature timelines are documented in [ROADMAP.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/ROADMAP.md).
+The output binary is staged at `publish/CustomerLedger.Web.exe`.
 
 ---
 
-## FAQ
+## 🛡️ Security
 
-- **Q: Does the app require a running MySQL instance to test?**
-  - A: No, it automatically falls back to EF Core In-Memory mode in Development.
-
----
-
-## Troubleshooting
-
-Refer to [docs/troubleshooting/Troubleshooting.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/docs/troubleshooting/Troubleshooting.md) for common resolution steps.
+Smart Customer Ledger enforces HTTPS redirection, parameterized SQL script sanitization, and strict claims-based role policies (`Administrator`, `BranchManager`, `Staff`). See [SECURITY.md](SECURITY.md) to report a vulnerability.
 
 ---
 
-## License
+## 🤝 Contributor
 
-Distributed under the [MIT License](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/LICENSE).
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/SufiyanAasim">
+        <img src="https://github.com/SufiyanAasim.png" width="80" alt="SufiyanAasim"/><br/>
+        <sub><b>Mohammad Sufiyan Aasim</b></sub>
+      </a><br/>
+      <sub>System Architect & Sole Developer</sub>
+    </td>
+  </tr>
+</table>
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to get involved.
 
 ---
 
-## Acknowledgements
+## 📄 License
 
-- .NET 8 LTS Core Engineering Team
-- Bootstrap 5 & FontAwesome Design System
-
----
-
-## Support
-
-Refer to [SUPPORT.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/SUPPORT.md) for help and inquiry instructions.
+[MIT License](LICENSE) © 2024 Smart Customer Ledger Contributors.
