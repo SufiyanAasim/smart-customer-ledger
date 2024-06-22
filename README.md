@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="Smart Customer Ledger Logo" width="110" />
+<img src="assets/logo.png" alt="Smart Customer Ledger Logo" width="160" />
 
 # Smart Customer Ledger
 
