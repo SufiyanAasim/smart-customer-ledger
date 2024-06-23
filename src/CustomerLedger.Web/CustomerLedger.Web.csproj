@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <UserSecretsId>aspnet-CustomerLedger.Web-e567a83c-9015-46ce-a346-605084ea628a</UserSecretsId>
   </PropertyGroup>
 
