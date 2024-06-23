@@ -7,7 +7,7 @@
 **A multi-branch customer billing, credit limit, payment, installment, and customer interaction tracking system**
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat&logo=dotnet&logoColor=white)](docs/development/Development.md)
-[![Version](https://img.shields.io/badge/version-7.0.0%20Capital-10b981?style=flat)](docs/releases/v7.0.0-Capital.md)
+[![Version](https://img.shields.io/badge/version-7.0.0%20Capital-10b981?style=flat)](docs/releases/v7.0.0.md)
 [![Database](https://img.shields.io/badge/Database-MySQL%208.0-003B57?style=flat&logo=mysql&logoColor=white)](docs/architecture/Architecture.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-64748b?style=flat)]()
@@ -27,13 +27,13 @@ The application is structured around a top-to-bottom release version architectur
 
 | Version | Codename | Highlights & Features | Release Notes |
 |:---|:---|:---|:---|
-| **v1.0.0** | **Index** | Foundation 4-tier architecture, Identity authentication, multi-branch scoping | [v1.0.0 Release](docs/releases/v1.0.0-Index.md) |
-| **v2.0.0** | **Balance** | ACID financial payment settlements, installment remainder splitting, reconciliation | [v2.0.0 Release](docs/releases/v2.0.0-Balance.md) |
-| **v3.0.0** | **Snapshot** | MySQL database backup/restore (`mysqldump`), CSV/JSON data import & export | [v3.0.0 Release](docs/releases/v3.0.0-Snapshot.md) |
-| **v4.0.0** | **Chronicle** | Data dictionary generation, Mermaid ERD diagrams, operational manuals | [v4.0.0 Release](docs/releases/v4.0.0-Chronicle.md) |
-| **v5.0.0** | **Replica** | Read/Write replica database separation, replica health check monitoring | [v5.0.0 Release](docs/releases/v5.0.0-Replica.md) |
-| **v6.0.0** | **Shard** | Logical database sharding, deterministic branch routing, cross-shard reports | [v6.0.0 Release](docs/releases/v6.0.0-Shard.md) |
-| **v7.0.0** | **Capital** | Supervised Logistic Regression credit risk model & RFM customer segmentation | [v7.0.0 Release](docs/releases/v7.0.0-Capital.md) |
+| **v1.0.0** | **Index** | Foundation 4-tier architecture, Identity authentication, multi-branch scoping | [v1.0.0 Release](docs/releases/v1.0.0.md) |
+| **v2.0.0** | **Balance** | ACID financial payment settlements, installment remainder splitting, reconciliation | [v2.0.0 Release](docs/releases/v2.0.0.md) |
+| **v3.0.0** | **Snapshot** | MySQL database backup/restore (`mysqldump`), CSV/JSON data import & export | [v3.0.0 Release](docs/releases/v3.0.0.md) |
+| **v4.0.0** | **Chronicle** | Data dictionary generation, Mermaid ERD diagrams, operational manuals | [v4.0.0 Release](docs/releases/v4.0.0.md) |
+| **v5.0.0** | **Replica** | Read/Write replica database separation, replica health check monitoring | [v5.0.0 Release](docs/releases/v5.0.0.md) |
+| **v6.0.0** | **Shard** | Logical database sharding, deterministic branch routing, cross-shard reports | [v6.0.0 Release](docs/releases/v6.0.0.md) |
+| **v7.0.0** | **Capital** | Supervised Logistic Regression credit risk model & RFM customer segmentation | [v7.0.0 Release](docs/releases/v7.0.0.md) |
 
 ---
 
