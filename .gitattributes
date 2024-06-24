@@ -10,12 +10,22 @@
 *.exe binary
 *.dll binary
 
-# Linguist Language Overrides
+# Linguist Language Overrides & Exclusions
 publish/** linguist-vendored
 publish/** linguist-generated
-publish/*.exe linguist-vendored
-publish/*.dll linguist-vendored
 assets/** linguist-vendored
 scripts/** linguist-vendored
+docs/** linguist-documentation
+*.md linguist-documentation
 *.ps1 linguist-vendored
 *.sh linguist-vendored
+*.json linguist-vendored
+*.yml linguist-vendored
+*.config linguist-vendored
+
+# Detect explicit web languages
+*.cs linguist-detectable=true
+*.cshtml linguist-detectable=true
+*.css linguist-detectable=true
+*.js linguist-detectable=true
+*.sql linguist-detectable=true
