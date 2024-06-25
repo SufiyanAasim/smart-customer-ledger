@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-To report a security vulnerability, please email `sufiyanaasim@gmail.com` or submit a Security Report issue template via GitHub.
+To report a security vulnerability, please email `sufiyanaasim@outlook.com` or submit a Security Report issue template via GitHub.
