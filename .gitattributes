@@ -9,3 +9,13 @@
 *.ico binary
 *.exe binary
 *.dll binary
+
+# Linguist Language Overrides
+publish/** linguist-vendored
+publish/** linguist-generated
+publish/*.exe linguist-vendored
+publish/*.dll linguist-vendored
+assets/** linguist-vendored
+scripts/** linguist-vendored
+*.ps1 linguist-vendored
+*.sh linguist-vendored
