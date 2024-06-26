@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/CustomerLedger.Web/wwwroot/images/logo.png" alt="Smart Customer Ledger Logo" width="110" />
+<img src="assets/logo.png" alt="Smart Customer Ledger Logo" width="110" />
 
 # Smart Customer Ledger
 
@@ -18,6 +18,22 @@ Manages multi-branch customer accounts, processes atomic payment settlements wit
 [**Download .exe**](publish/CustomerLedger.Web.exe) · [**Changelog**](CHANGELOG.md) · [**Roadmap**](ROADMAP.md) · [**Report a Bug**](.github/ISSUE_TEMPLATE/bug_report.md)
 
 </div>
+
+---
+
+## 📌 Release Roadmap & Version History
+
+The application is structured around a top-to-bottom release version architecture:
+
+| Version | Codename | Highlights & Features | Release Notes |
+|:---|:---|:---|:---|
+| **v1.0.0** | **Index** | Foundation 4-tier architecture, Identity authentication, multi-branch scoping | [v1.0.0 Release](docs/releases/v1.0.0-Index.md) |
+| **v2.0.0** | **Balance** | ACID financial payment settlements, installment remainder splitting, reconciliation | [v2.0.0 Release](docs/releases/v2.0.0-Balance.md) |
+| **v3.0.0** | **Snapshot** | MySQL database backup/restore (`mysqldump`), CSV/JSON data import & export | [v3.0.0 Release](docs/releases/v3.0.0-Snapshot.md) |
+| **v4.0.0** | **Chronicle** | Data dictionary generation, Mermaid ERD diagrams, operational manuals | [v4.0.0 Release](docs/releases/v4.0.0-Chronicle.md) |
+| **v5.0.0** | **Replica** | Read/Write replica database separation, replica health check monitoring | [v5.0.0 Release](docs/releases/v5.0.0-Replica.md) |
+| **v6.0.0** | **Shard** | Logical database sharding, deterministic branch routing, cross-shard reports | [v6.0.0 Release](docs/releases/v6.0.0-Shard.md) |
+| **v7.0.0** | **Capital** | Supervised Logistic Regression credit risk model & RFM customer segmentation | [v7.0.0 Release](docs/releases/v7.0.0-Capital.md) |
 
 ---
 
@@ -73,7 +89,7 @@ CustomerService   InvoiceService  PaymentService  CustomerRiskScoringService
                     (EF Core DbContext & MySQL)
 ```
 
-Full architectural breakdown in [docs/architecture/Architecture.md](file:///d:/Completed%20Github%20Projects%20%28Fully%20Tested%20&%20Deployed%29/Smart%20Customer%20Ledger/docs/architecture/Architecture.md).
+Full architectural breakdown in [docs/architecture/Architecture.md](docs/architecture/Architecture.md).
 
 ---
 
@@ -123,6 +139,9 @@ Smart Customer Ledger/
 │   ├── CODEOWNERS
 │   ├── dependabot.yml
 │   └── PULL_REQUEST_TEMPLATE.md
+├── assets/
+│   ├── app.ico                    # Application icon file
+│   └── logo.png                   # High-resolution brand logo
 ├── docs/
 │   ├── architecture/ (Architecture.md)
 │   ├── deployment/ (Deployment.md)
