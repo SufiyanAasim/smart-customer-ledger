@@ -1,17 +1,29 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      microsoft-dependencies:
+        patterns:
+          - "Microsoft.*"
+  - package-ecosystem: "nuget"
     directory: "/src/CustomerLedger.Web"
     schedule:
       interval: "weekly"
+    groups:
+      microsoft-dependencies:
+        patterns:
+          - "Microsoft.*"
   - package-ecosystem: "nuget"
     directory: "/src/CustomerLedger.Infrastructure"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "nuget"
-    directory: "/tests/CustomerLedger.UnitTests"
-    schedule:
-      interval: "weekly"
+    groups:
+      microsoft-dependencies:
+        patterns:
+          - "Microsoft.*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
