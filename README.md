@@ -27,7 +27,7 @@ The application is structured around a top-to-bottom release version architectur
 
 | Version | Codename | Highlights & Features | Release Notes |
 |:---|:---|:---|:---|
-| **v1.0.0** | **Index** | Foundation 4-tier architecture, Identity authentication, multi-branch scoping | [v1.0.0 Release](docs/releases/v1.0.0.md) |
+| **v1.0.0** | **Index** *(Pre-Release)* | Foundation 4-tier architecture, Identity authentication, multi-branch scoping | [v1.0.0 Pre-Release](docs/releases/v1.0.0.md) |
 | **v2.0.0** | **Balance** | ACID financial payment settlements, installment remainder splitting, reconciliation | [v2.0.0 Release](docs/releases/v2.0.0.md) |
 | **v3.0.0** | **Snapshot** | MySQL database backup/restore (`mysqldump`), CSV/JSON data import & export | [v3.0.0 Release](docs/releases/v3.0.0.md) |
 | **v4.0.0** | **Chronicle** | Data dictionary generation, Mermaid ERD diagrams, operational manuals | [v4.0.0 Release](docs/releases/v4.0.0.md) |
