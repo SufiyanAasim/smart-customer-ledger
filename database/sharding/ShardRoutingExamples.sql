@@ -2,7 +2,7 @@
 -- CustomerLedger — ShardRoutingExamples.sql
 -- Illustrates, in raw SQL, the exact routing rule ShardResolver.cs
 -- implements in C# — useful for explaining the algorithm without
--- reading code, e.g. during a viva.
+-- reading code, e.g. during an architecture review.
 -- =====================================================================
 
 -- With 2 active shards (shard-01, shard-02, ordered by ShardId):

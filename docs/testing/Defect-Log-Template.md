@@ -1,6 +1,6 @@
 # Defect Log Template
 
-Copy the row template below for each new defect found during manual testing or grading.
+Copy the row template below for each new defect found during manual testing or audit review.
 Keep this file as a running log — do not delete resolved entries, mark them Closed instead.
 
 | ID | Date Found | Found By | Severity | Area | Description | Steps to Reproduce | Status | Resolution |

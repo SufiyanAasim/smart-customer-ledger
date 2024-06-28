@@ -1,6 +1,6 @@
 namespace CustomerLedger.Application.DTOs;
 
-/// <summary>Raw, human-readable feature values before z-score normalization — kept alongside the score so the UI/viva can show *why* a customer scored the way they did.</summary>
+/// <summary>Raw, human-readable feature values before z-score normalization — kept alongside the score so the UI/dashboard can show *why* a customer scored the way they did.</summary>
 public class CustomerRiskFeatures
 {
     public int CustomerId { get; init; }

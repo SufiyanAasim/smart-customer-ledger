@@ -58,7 +58,7 @@ END$$
 DELIMITER ;
 
 -- Adjust the row count here — 2,000 keeps this script's runtime reasonable
--- for a classroom/grading demonstration while still being large enough
+-- for a production benchmark demonstration while still being large enough
 -- for EXPLAIN to show a clear index-vs-scan difference.
 CALL sp_generate_large_dataset(2000);
 

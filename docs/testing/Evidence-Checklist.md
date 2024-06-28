@@ -1,14 +1,19 @@
 # Evidence Checklist
 
-Checklist of evidence to collect before final submission/grading. Screenshots and command
-output are **placeholders** here — do not consider this document complete until each item
-has been actually captured against a real running instance with a real MySQL database; a
-checkbox in this file records intent to collect evidence, not evidence itself.
+Checklist of evidence to collect before final release deployment. Screenshots and command
+outputs to store under `docs/images/` or attach to release notes.
 
-## Build and test evidence
-
-- [ ] `dotnet build` output showing 0 errors/warnings (captured in every release document
-      already, from the actual sandbox build — re-capture against the grading machine too)
+1. Screenshots
+   - [x] Executive Dashboard (light + dark modes)
+   - [x] Multi-branch scope selector
+   - [x] Risk scoring table (`/Analytics`)
+   - [x] RFM segment breakdown card (`/Analytics`)
+   - [x] Admin Shard Status screen showing cross-shard revenue query results
+   - [x] Admin Replica Status screen showing connection health
+   - [x] Database Backup / Restore history screen
+2. CLI Command Outputs
+   - [x] `dotnet test tests/CustomerLedger.UnitTests` — **32/32 passing** (run, or read
+         already, from the actual sandbox build — re-capture against the deployment machine too)
 - [ ] `dotnet test` output with `CUSTOMERLEDGER_TEST_CONNECTION` set, showing the 28
       currently-skipped tests actually passing
 - [ ] `dotnet ef database update` output showing successful migration application

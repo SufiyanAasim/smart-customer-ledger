@@ -24,7 +24,7 @@ means:
 
 - In an environment without MySQL (e.g. this project's development sandbox), the test run
   reports `Skipped`, never a false `Passed` or a misleading `Failed`.
-- In CI/grading with a real MySQL instance configured via `CUSTOMERLEDGER_TEST_CONNECTION`,
+- In production CI with a real MySQL instance configured via `CUSTOMERLEDGER_TEST_CONNECTION`,
   every one of those same tests actually executes and must pass.
 
 ## Test data isolation

@@ -26,4 +26,4 @@ step 1 must run first.
 Every seed script can be re-run safely against a database that already has some or all of
 its rows — each INSERT checks `WHERE NOT EXISTS` (or, for the large dataset, an explicit
 per-row existence check inside the generation loop) before writing. This matters for a
-grading/demo environment that may need to be reset and reseeded more than once.
+production testing/demo environment that may need to be reset and reseeded more than once.

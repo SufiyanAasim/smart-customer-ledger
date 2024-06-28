@@ -32,7 +32,7 @@ approach was chosen because:
 
 ## What the MySQL Event Scheduler equivalent would look like
 
-Documented here for completeness/viva preparation, not implemented:
+Documented here for completeness/architecture review, not implemented:
 
 ```sql
 SET GLOBAL event_scheduler = ON;

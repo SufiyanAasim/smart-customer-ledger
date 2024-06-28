@@ -4,7 +4,7 @@
 -- so the schema matches what EF Core's Pomelo provider generates.
 --
 -- Source of truth: this script documents the schema for MySQL Workbench
--- demonstration and manual grading review. The database actually used by
+-- demonstration and manual production review. The database actually used by
 -- the application is created/updated via EF Core migrations
 -- (dotnet ef database update) — see docs/database/Database-Dictionary.md
 -- for which source governs which object.

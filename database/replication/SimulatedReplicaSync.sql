@@ -7,7 +7,7 @@
 -- streaming. Lag is therefore however long ago the last sync ran, not a
 -- sub-second replication delay.
 --
--- Do not present this as native replication in a viva — be explicit
+-- Do not present this as native replication in an architecture walkthrough — be explicit
 -- that it is a documented simulation of the read/write separation
 -- pattern, chosen because this environment cannot guarantee a second
 -- MySQL server is available to configure as a true replica.

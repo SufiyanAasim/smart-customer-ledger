@@ -3,7 +3,7 @@
 -- Full table DDL mirroring the EF Core InitialCreate migration
 -- (src/CustomerLedger.Infrastructure/Data/Migrations/*_InitialCreate.cs).
 --
--- Provided for MySQL Workbench walkthroughs and grading review. In normal
+-- Provided for MySQL Workbench walkthroughs and production review. In normal
 -- development/deployment, run:
 --   dotnet ef database update --project src/CustomerLedger.Infrastructure --startup-project src/CustomerLedger.Web
 -- which creates these same tables (including the AspNetUsers/AspNetRoles

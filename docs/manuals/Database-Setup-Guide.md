@@ -12,7 +12,7 @@ This single command creates every table (business + ASP.NET Core Identity) from 
 Core model. It does **not** create the six views or the eight triggers — those are pure SQL
 objects with no EF Core equivalent.
 
-## Option B — Manual SQL Workbench walkthrough (for grading/demonstration)
+## Option B — Manual SQL Workbench walkthrough (for manual inspection/demonstration)
 
 Run these files, **in this exact order**, against a database EF has not yet touched:
 
